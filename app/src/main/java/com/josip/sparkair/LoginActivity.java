@@ -1,8 +1,11 @@
 package com.josip.sparkair;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,10 +26,14 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+
+
         etUsername = (EditText) findViewById(R.id.login_etUsername);
         etPassword = (EditText) findViewById(R.id.login_etPassword);
         btLogin = (Button) findViewById(R.id.login_btLogin);
         tvNotAMember = (TextView) findViewById(R.id.login_tvNotAMeber);
+
 
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,18 +66,15 @@ public class LoginActivity extends AppCompatActivity {
             etPassword.setText("");
             return false;
         }
-        else {
+        else
+        {
+            //uspjesno loginran korisnik
+            Toast.makeText(getApplicationContext(), Integer.toString(user.getUserID()) + "," + user.getName() + "," + user.getSurname(), Toast.LENGTH_SHORT).show();
             etUsername.setText("");
             etPassword.setText("");
-            Toast.makeText(getApplicationContext(), Integer.toString(user.getUserID()) + "," + user.getName() + "," + user.getSurname(), Toast.LENGTH_SHORT).show();
 
-            //****************shared prefersences za spremanje logina ****************************
-
-            SharedPreferences settings = getSharedPreferences("UserInfo", 0);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putString("Username", username);
-            editor.putString("Password", password);
-            editor.commit();
+            //Spremanje korisnika u sharedPreferences
+            saveInfo(username, password);
 
 
             //*************************************************************************************
@@ -81,4 +85,30 @@ public class LoginActivity extends AppCompatActivity {
     private boolean isEmpty(EditText myEditText) {
         return myEditText.getText().toString().trim().length() == 0;
     }
+
+    //Spremanje informacija o trenutnom useru u shared preferences
+    public void saveInfo(String username, String password) {
+        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("username", username);
+        editor.putString("password", password);
+        editor.apply();
+
+        Toast.makeText(getApplicationContext(), "Saved in SP", Toast.LENGTH_SHORT).show();
+    }
+
+    //Vraca trenutnog usera
+    public void getCurrentUser() {
+        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+
+        String username = settings.getString("username", "guest");
+        String password = settings.getString("password", "guest");
+
+
+        Toast.makeText(getApplicationContext(), username + " " + password, Toast.LENGTH_SHORT).show();
+
+    }
+
+
 }

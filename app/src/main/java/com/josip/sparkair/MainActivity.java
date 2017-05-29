@@ -1,6 +1,7 @@
 package com.josip.sparkair;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.IntegerRes;
@@ -42,6 +43,12 @@ public class MainActivity extends AppCompatActivity
         myDb = new DatabaseHelper(this);
         tvBaza = (TextView) findViewById(R.id.tvBaza);
 
+        //Provjera koji je user logovan
+        User currentUser = getCurrentUser();
+        tvBaza.setText("Current user: " +  Integer.toString(currentUser.getUserID()) + ", " + currentUser.getUsername() + ", " + currentUser.getPassword() + "\n");
+
+
+        //Postavnjanje tabTostova
         TabHost host = (TabHost) findViewById(R.id.tabHost);
         host.setup();
 
@@ -173,13 +180,13 @@ public class MainActivity extends AppCompatActivity
         ArrayList<User> users = myDb.getAllusers();
 
         if (users.size() == 0) {
-            tvBaza.setText("Nema usera u bazi");
+            tvBaza.setText("\n" + tvBaza.getText().toString() + "Nema usera u bazi");
         } else {
             StringBuffer string = new StringBuffer();
             for (int i = 0; i < users.size(); i++) {
                 string.append(Integer.toString(users.get(i).getUserID()) + "," + users.get(i).getName() + ", " + users.get(i).getSurname() + "\n");
             }
-            tvBaza.setText("Users: \n" + string.toString());
+            tvBaza.setText("\n" + tvBaza.getText().toString() + "\n" + "Users: \n" + string.toString());
         }
 
 
@@ -195,7 +202,7 @@ public class MainActivity extends AppCompatActivity
         List<Week> weeks = myDb.getAllWeeks();
 
         if (weeks.size() == 0) {
-            tvBaza.setText("Nema weekova u bazi");
+            tvBaza.setText("\n" + tvBaza.getText().toString() + "\n" + "Nema weekova u bazi");
         } else {
             StringBuffer string2 = new StringBuffer();
             for (int i = 0; i < weeks.size(); i++) {
@@ -206,5 +213,28 @@ public class MainActivity extends AppCompatActivity
 
         }
     }
+
+    public User getCurrentUser() {
+
+        //Provjera da li je user shared preferences
+        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+
+        String username = settings.getString("username", "guest");
+        String password = settings.getString("password", "guest");
+
+        //
+        if(username.equals("guest"))
+        {
+          return new User(-1, "guest", "guest", "Guest", "Guest", "slika", true, -1);
+        }
+        else
+        {
+            User currentUser =  myDb.getUserInfo(username, password);
+            return currentUser;
+        }
+        //Toast.makeText(getApplicationContext(), username + " " + password, Toast.LENGTH_SHORT).show();
+
+    }
+
 
 }
