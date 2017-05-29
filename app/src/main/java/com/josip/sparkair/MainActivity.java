@@ -24,6 +24,8 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.josip.sparkair.Util.Util;
+
 import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity
 
     TabHost tabHost;
     DatabaseHelper myDb;
-    ListView lvIduciLetovi;// = (ListView) findViewById(R.id.main_lvIduciLetovi);
+    ListView lvIduciLetovi;
     public TextView tvBaza;
 
     @Override
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         tvBaza = (TextView) findViewById(R.id.tvBaza);
 
         //Provjera koji je user logovan
-        User currentUser = getCurrentUser();
+        User currentUser = Util.getCurrentUser(getApplicationContext());
         tvBaza.setText("Current user: " +  Integer.toString(currentUser.getUserID()) + ", " + currentUser.getUsername() + ", " + currentUser.getPassword() + "\n");
 
 
@@ -98,28 +100,21 @@ public class MainActivity extends AppCompatActivity
         //Postavljanje custom adaptera za iduce letove
         final Flight[] flights = new Flight[20];
         for (int i = 0; i < 20; i++) {
-            flights[i] = new Flight(1, 2, 3, "Barcelona", Calendar.getInstance(), 200);
+            flights[i] = new Flight(1, 2, "Barcelona", Calendar.getInstance(), 200, true);
         }
 
         ListAdapter iduciLetoviAdapter = new CustomAdapterIduciLetovi(this, flights);
         lvIduciLetovi.setAdapter(iduciLetoviAdapter);
         lvIduciLetovi.setClickable(true);
 
+        //Sta ce se desiti na klik itema sa liste
         lvIduciLetovi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Flight flight = flights[position];
-                Toast.makeText(getApplicationContext(), "RADI!", Toast.LENGTH_SHORT).show();
-
+                Flight flight = flights[position];
             }
         });
-
     }
-
-
-
-
-
 
     @Override
     public void onBackPressed() {
@@ -149,14 +144,12 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.actionSignIn) {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
-
-
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+    //Itemi iz menija
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -172,11 +165,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.navKontakt) {
 
         }
-//        else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
+        else if (id == R.id.nav_odjava) {
+
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -186,61 +177,35 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        testiranje();
+    }
 
 
-
+    public void testiranje() {
         //TESTIRANJE FUNKCIJE getallusers sa listom
-        ArrayList<User> users = myDb.getAllusers();
+         ArrayList<User> users = myDb.getAllusers();
 
-        if (users.size() == 0) {
-            tvBaza.setText("\n" + tvBaza.getText().toString() + "Nema usera u bazi");
-        } else {
-            StringBuffer string = new StringBuffer();
-            for (int i = 0; i < users.size(); i++) {
-                string.append(Integer.toString(users.get(i).getUserID()) + "," + users.get(i).getName() + ", " + users.get(i).getSurname() + "\n");
-            }
-            tvBaza.setText("\n" + tvBaza.getText().toString() + "\n" + "Users: \n" + string.toString());
-        }
+         if (users.size() == 0) {
+             tvBaza.setText("\n" + tvBaza.getText().toString() + "Nema usera u bazi");
+         } else {
+             StringBuffer string = new StringBuffer();
+             for (int i = 0; i < users.size(); i++) {
+                 string.append(Integer.toString(users.get(i).getUserID()) + "," + users.get(i).getName() + ", " + users.get(i).getSurname() + "\n");
+             }
+             tvBaza.setText("\n" + tvBaza.getText().toString() + "\n" + "Users: \n" + string.toString());
+         }
 
 
-        //testiranje WEEKS tabele
-        Calendar start = Calendar.getInstance();
-        start.set(2017, Calendar.MAY, 29, 23, 15);
 
-        Calendar end = Calendar.getInstance();
-        end.set(2017, Calendar.JUNE, 3, 20, 0);
+        //Testiranje flightova
+        myDb.insertFlight(2, "Barcelona", Calendar.getInstance(), 200, true);
 
-        myDb.insertWeek(new Week(-1, start, end));
+        ArrayList<Flight> flights = myDb.getAllFlights();
+        tvBaza.setText(tvBaza.getText().toString() + "\n" + "Letovi:\n");
 
-        List<Week> weeks = myDb.getAllWeeks();
-
-        if (weeks.size() == 0) {
-            tvBaza.setText("\n" + tvBaza.getText().toString() + "\n" + "Nema weekova u bazi");
-        } else {
-            StringBuffer string2 = new StringBuffer();
-            for (int i = 0; i < weeks.size(); i++) {
-                string2.append(Integer.toString(weeks.get(i).getWeekID()) + "," + weeks.get(i).getStartDateString() + ", " + weeks.get(i).getEndDateString() + "\n");
-
-            }
-            tvBaza.setText(tvBaza.getText().toString() +  "\nWeeks: \n" + string2.toString());
-
+        for (int i = 0; i < flights.size(); i++) {
+            tvBaza.setText(tvBaza.getText().toString() + "\n" + Integer.toString(flights.get(i).getFlightID()) + ", " + Integer.toString(flights.get(i).getUserID()) + "," + flights.get(i).getDestination() );
         }
     }
-
-    public User getCurrentUser() {
-        //Provjera da li je user shared preferences
-        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
-        String username = settings.getString("username", "guest");
-        String password = settings.getString("password", "guest");
-
-        if(username.equals("guest")) {
-          return new User(-1, "guest", "guest", "Guest", "Guest", "slika", true, -1);
-        }
-        //User currentUser =  myDb.getUserInfo(username, password);
-        return myDb.getUserInfo(username, password);
-
-        //Toast.makeText(getApplicationContext(), username + " " + password, Toast.LENGTH_SHORT).show();
-    }
-
 
 }

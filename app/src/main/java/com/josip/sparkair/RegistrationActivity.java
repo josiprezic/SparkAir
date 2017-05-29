@@ -40,12 +40,15 @@ public class RegistrationActivity extends AppCompatActivity {
 
                     if(isInserted == true)
                     {
-                        Toast.makeText(getApplicationContext(), "Umetnuto!", Toast.LENGTH_SHORT).show();
+                        etName.setText("");
+                        etSurname.setText("");
+                        etUsername.setText("");
+                        etPassword.setText("");
+                        Toast.makeText(getApplicationContext(), "Spremljeno u bazu!", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
-                        Toast.makeText(getApplicationContext(), "Greska pri umetanju ://", Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(getApplicationContext(), "Greska pri insertu u bazu", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
