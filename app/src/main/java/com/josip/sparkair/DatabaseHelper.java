@@ -214,15 +214,13 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
 
     /*******************************************WEEK METHODS*************************************/
 
+    //Spremanje week-a u bazu
     public boolean insertWeek(Week week)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-
-
-
-        contentValues.put(WEEK_STARTDATE, week.getStartDate().toString());
-        contentValues.put(WEEK_ENDDATE, week.getEndDate().toString());
+        contentValues.put(WEEK_STARTDATE, CalendarToString(week.getStartDate()));
+        contentValues.put(WEEK_ENDDATE, CalendarToString(week.getEndDate()));
         long result = db.insert(WEEKS_TABLE, null, contentValues);
         db.close();
         if(result == -1){
@@ -240,22 +238,31 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
 
         if(c!= null && c.getCount() > 0) {
             while(c.moveToNext()) {
+                list.add(new Week(c.getInt(0), StringToCalendar(c.getString(1)), StringToCalendar(c.getString(2))));
                 //list.add(new Week(c.getInt(0), c.getString(1), c.getString(2)));
             }
         }
         return list;
     }
 
-
-
     /*******************************************FLIGHT METHODS***********************************/
+
+
+
     /*******************************************NOTE METHODS*************************************/
     /*******************************************RESERVATION METHODS******************************/
     /*******************************************LOG METHODS**************************************/
 
 
+    /*****************************************OTHER METHODS**************************************/
+
     //Vraca String u formatu YYYY-MM-DD-HH-MM
+    //Pripaziti na vrijednost MONTH(0-11) i DAY(SUNDAY == 1)
     private String CalendarToString(Calendar c) {
+
+        //Potrebno kako bi se preracunale vrijednosti
+        c.get(Calendar.WEEK_OF_YEAR);
+
         String y = String.valueOf(c.get(Calendar.YEAR));
         String month = String.valueOf(c.get(Calendar.MONTH));
         String d = String.valueOf(c.get(Calendar.DAY_OF_MONTH));
@@ -265,5 +272,29 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
         String result = y + "-" + month + "-" + d + "-" + h + "-" + minute;
         return  result;
     }
+
+    //Prima string u formatu YYYY-MM-DD-HH-MM i vraca objekat tipa Calendar
+    //Pripaziti na vrijednost MONTH(0-11) i DAY(SUNDAY == 1)
+    private Calendar StringToCalendar(String s) {
+        String[] odvojeno = s.split("-");
+        int[] vrijednosti = new int[5];
+        for (int i = 0; i < 5; i++) {
+            vrijednosti[i] = Integer.valueOf(odvojeno[i]);
+        }
+
+        Calendar rezultat = Calendar.getInstance();
+        rezultat.set(Calendar.YEAR, vrijednosti[0]);
+        rezultat.set(Calendar.MONTH, vrijednosti[1]);
+        rezultat.set(Calendar.DAY_OF_MONTH, vrijednosti[2]);
+        rezultat.set(Calendar.HOUR_OF_DAY, vrijednosti[3]);
+        rezultat.set(Calendar.MINUTE, vrijednosti[4]);
+
+        //Potrebno kako bi se preracunale vrijednosti
+        rezultat.get(Calendar.WEEK_OF_YEAR);
+
+        return rezultat;
+    }
+
+
 
 }

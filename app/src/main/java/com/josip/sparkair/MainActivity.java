@@ -24,6 +24,7 @@ import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -168,34 +169,42 @@ public class MainActivity extends AppCompatActivity
         //tvBaza.setText(buffer.toString());
 
 
-        //TESTIRANJE DATUMA
-       Calendar calendar = Calendar.getInstance();
-       calendar.set(Calendar.YEAR, 2000);
-       calendar.set(Calendar.MONTH, Calendar.JANUARY);
-       calendar.set(Calendar.DAY_OF_MONTH, 1);
-
-        int broj = Integer.valueOf("00000002");
-
-
-
-       tvBaza.setText(String.valueOf(broj));
-
-        String vrime = tvBaza.getText().toString();
-
-        Calendar calendar1 = Calendar.getInstance();
-
-
-
         //TESTIRANJE FUNKCIJE getallusers sa listom
-      // ArrayList<User> users = myDb.getAllusers();
+        ArrayList<User> users = myDb.getAllusers();
 
-      // StringBuffer string = new StringBuffer();
-      // for (int i = 0; i < users.size(); i++) {
-      //     string.append(Integer.toString(users.get(i).getUserID()) + "," + users.get(i).getName() + ", " +  users.get(i).getSurname() + "\n");
-      // }
+        if (users.size() == 0) {
+            tvBaza.setText("Nema usera u bazi");
+        } else {
+            StringBuffer string = new StringBuffer();
+            for (int i = 0; i < users.size(); i++) {
+                string.append(Integer.toString(users.get(i).getUserID()) + "," + users.get(i).getName() + ", " + users.get(i).getSurname() + "\n");
+            }
+            tvBaza.setText("Users: \n" + string.toString());
+        }
 
-      // tvBaza.setText(string.toString());
 
+        //testiranje WEEKS tabele
+        Calendar start = Calendar.getInstance();
+        start.set(2017, Calendar.MAY, 29, 23, 15);
 
+        Calendar end = Calendar.getInstance();
+        end.set(2017, Calendar.JUNE, 3, 20, 0);
+
+        myDb.insertWeek(new Week(-1, start, end));
+
+        List<Week> weeks = myDb.getAllWeeks();
+
+        if (weeks.size() == 0) {
+            tvBaza.setText("Nema weekova u bazi");
+        } else {
+            StringBuffer string2 = new StringBuffer();
+            for (int i = 0; i < weeks.size(); i++) {
+                string2.append(Integer.toString(weeks.get(i).getWeekID()) + "," + weeks.get(i).getStartDateString() + ", " + weeks.get(i).getEndDateString() + "\n");
+
+            }
+            tvBaza.setText(tvBaza.getText().toString() +  "\nWeeks: \n" + string2.toString());
+
+        }
     }
+
 }
