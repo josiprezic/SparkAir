@@ -128,8 +128,8 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    /*******************************************USER METHODS***************************************/
 
+    /*******************************************USER METHODS***************************************/
     //Insert novih usera
     public boolean insertUser(String name, String surname, String username, String password){
 
@@ -182,8 +182,8 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
         return new User();
     }
 
-    /*******************************************FLIGHT METHODS*************************************/
 
+    /*******************************************FLIGHT METHODS*************************************/
     //Insert novih flight-ova
     public boolean insertFlight(int userID, String destination, Calendar dateTime, double price, boolean active) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -219,8 +219,57 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
     }
 
     /*******************************************NOTE METHODS***************************************/
+    //Insert novih notesa
+    public boolean insertNote(int flightID, int userID, String content) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NOTE_FLIGHT_ID, flightID);
+        contentValues.put(NOTE_USER_ID, userID);
+        contentValues.put(NOTE_CONTENT, content);
 
-    //
+        long result = db.insert(NOTES_TABLE, null, contentValues);
+        db.close();
+        if(result == -1)
+            return false;
+        return true;
+    }
+
+
+        /*
+        *
+        *
+    public static final String NOTES_TABLE = "notes";
+    public static final String NOTE_FLIGHT_ID = "flight_id";
+    public static final String NOTE_USER_ID = "user_id";
+    public static final String NOTE_CONTENT = "content";
+
+
+     //Creating table notes
+        db.execSQL("CREATE TABLE " + NOTES_TABLE + " ( " +
+                NOTE_FLIGHT_ID + " INTEGER PRIMARY KEY," +
+                NOTE_USER_ID + " INTEGER," +
+                NOTE_CONTENT + " TEXT)");
+
+
+                 public Note(int flightID, int userID, String content) {
+        * */
+
+    ArrayList<Note> getAllNotes() {
+        ArrayList<Note> list = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //Dobavljenje svih notesa
+        Cursor c = db.rawQuery("SELECT * FROM " + NOTES_TABLE, null);
+
+        //Ubacivanje notesa u listu
+        if(c!= null && c.getCount() > 0) {
+            while(c.moveToNext()) {
+                list.add(new Note(c.getInt(0), c.getInt(1), c.getString(2)));
+            }
+        }
+        return list;
+    }
+
 
     /*******************************************RESERVATION METHODS******************************/
     /*******************************************LOG METHODS**************************************/

@@ -195,16 +195,21 @@ public class MainActivity extends AppCompatActivity
              tvBaza.setText("\n" + tvBaza.getText().toString() + "\n" + "Users: \n" + string.toString());
          }
 
-
-
         //Testiranje flightova
         myDb.insertFlight(2, "Barcelona", Calendar.getInstance(), 200, true);
-
         ArrayList<Flight> flights = myDb.getAllFlights();
         tvBaza.setText(tvBaza.getText().toString() + "\n" + "Letovi:\n");
-
         for (int i = 0; i < flights.size(); i++) {
             tvBaza.setText(tvBaza.getText().toString() + "\n" + Integer.toString(flights.get(i).getFlightID()) + ", " + Integer.toString(flights.get(i).getUserID()) + "," + flights.get(i).getDestination() );
+        }
+
+
+        //Testoramke notesa
+        myDb.insertNote(2, 3, "Ovo je sadrzaj biljeske.");
+        ArrayList<Note> notes = myDb.getAllNotes();
+        tvBaza.setText(tvBaza.getText().toString() + "\n" + "Nostesi:\n");
+        for (int i = 0; i < notes.size(); i++) {
+            tvBaza.setText(tvBaza.getText().toString() + "\n" + Integer.toString(notes.get(i).getFlightID()) + ", " + Integer.toString(notes.get(i).getUserID()) + "," + notes.get(i).getContent() );
         }
     }
 
