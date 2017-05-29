@@ -16,7 +16,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity
 
     TabHost tabHost;
     DatabaseHelper myDb;
+    ListView lvIduciLetovi;// = (ListView) findViewById(R.id.main_lvIduciLetovi);
     public TextView tvBaza;
 
     @Override
@@ -41,6 +45,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         myDb = new DatabaseHelper(this);
+        lvIduciLetovi = (ListView) findViewById(R.id.main_lvIduciLetovi);
         tvBaza = (TextView) findViewById(R.id.tvBaza);
 
         //Provjera koji je user logovan
@@ -88,7 +93,33 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //myDb.insertUser("TestIme", "TestPrezime", "TestUSername", "TestPassword");
+
+
+        //Postavljanje custom adaptera za iduce letove
+        final Flight[] flights = new Flight[20];
+        for (int i = 0; i < 20; i++) {
+            flights[i] = new Flight(1, 2, 3, "Barcelona", Calendar.getInstance(), 200);
+        }
+
+        ListAdapter iduciLetoviAdapter = new CustomAdapterIduciLetovi(this, flights);
+        lvIduciLetovi.setAdapter(iduciLetoviAdapter);
+        lvIduciLetovi.setClickable(true);
+
+        lvIduciLetovi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Flight flight = flights[position];
+                Toast.makeText(getApplicationContext(), "RADI!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
     }
+
+
+
+
+
 
     @Override
     public void onBackPressed() {
@@ -156,24 +187,6 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
-        //TESTIRANJE BAZE -tabela user
-        //String bazaKaze = "";
-        //StringBuffer buffer = new StringBuffer();
-        //buffer.append(" ");
-        //int brojac = 0;
-        //Cursor c  = myDb.getAllUsers();
-        //if (c == null){
-        //    Toast.makeText(getApplicationContext(), "Baza je prazna", Toast.LENGTH_SHORT).show();
-        //}
-        //else
-        //{
-        //   while (c.moveToNext()) {
-        //        brojac++;
-        //        buffer.append("Id: " + Integer.toString(c.getInt(0)) + " Username: " + c.getString(1) + "\n");
-        //   }
-        //}
-        //
-        //tvBaza.setText(buffer.toString());
 
 
         //TESTIRANJE FUNKCIJE getallusers sa listom
@@ -215,25 +228,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     public User getCurrentUser() {
-
         //Provjera da li je user shared preferences
         SharedPreferences settings = getSharedPreferences("UserInfo", 0);
-
         String username = settings.getString("username", "guest");
         String password = settings.getString("password", "guest");
 
-        //
-        if(username.equals("guest"))
-        {
+        if(username.equals("guest")) {
           return new User(-1, "guest", "guest", "Guest", "Guest", "slika", true, -1);
         }
-        else
-        {
-            User currentUser =  myDb.getUserInfo(username, password);
-            return currentUser;
-        }
-        //Toast.makeText(getApplicationContext(), username + " " + password, Toast.LENGTH_SHORT).show();
+        //User currentUser =  myDb.getUserInfo(username, password);
+        return myDb.getUserInfo(username, password);
 
+        //Toast.makeText(getApplicationContext(), username + " " + password, Toast.LENGTH_SHORT).show();
     }
 
 
