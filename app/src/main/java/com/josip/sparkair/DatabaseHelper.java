@@ -60,8 +60,7 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
     public static final String LOG_ID = "_id";
     public static final String LOG_USER_ID = "user_id";
     public static final String LOG_ACTION = "action";
-    public static final String LOG_DATE = "date";
-    public static final String LOG_TIME = "time";
+    public static final String LOG_DATE_TIME = "time";
 
 
     public DatabaseHelper(Context context) {
@@ -112,8 +111,7 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
                 LOG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 LOG_USER_ID + " INTEGER," +
                 LOG_ACTION + " TEXT," +
-                LOG_DATE + " TEXT," +
-                LOG_TIME + " TEXT)");
+                LOG_DATE_TIME + " TEXT)");
     }
 
     //Izvrsava se prilikom promjene modela baze
@@ -288,7 +286,37 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
 
 
     /*******************************************LOG METHODS**************************************/
+    //Insertanje logova u bazu
+    public boolean insertLog(int userID, String action, Calendar dateTime) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(LOG_USER_ID, userID);
+        contentValues.put(LOG_ACTION, action);
+        contentValues.put(LOG_DATE_TIME, Util.CalendarToString(dateTime));
 
+        long result = db.insert(LOGS_TABLE, null, contentValues);
+        db.close();
+        if(result == -1)
+            return false;
+        return true;
+    }
+
+    //Dobavljenje svih logova iz baze
+    ArrayList<MyLog> getAllLogs() {
+        ArrayList<MyLog> list = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //Dobavljanje i pohrana u Cursor
+        Cursor c = db.rawQuery("SELECT * FROM " + LOGS_TABLE, null);
+
+        //Prebacivanje lgova u listu
+        if (c != null && c.getCount() > 0) {
+            while (c.moveToNext()) {
+                list.add(new MyLog(c.getInt(0), c.getInt(1), c.getString(2), Util.StringToCalendar(c.getString(3))));
+            }
+        }
+        return  list;
+    }
 
     /*****************************************OTHER METHODS**************************************/
 

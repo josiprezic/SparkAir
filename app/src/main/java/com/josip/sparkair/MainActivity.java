@@ -217,5 +217,13 @@ public class MainActivity extends AppCompatActivity
         for (int i = 0; i < reservations.size(); i++) {
             tvBaza.setText(tvBaza.getText().toString() + "\n" + Integer.toString(reservations.get(i).getUserID()) + ", " + Integer.toString(reservations.get(i).getFlightID()) + "," + Util.CalendarToString(reservations.get(i).getDate()) + " ," + String.valueOf(reservations.get(i).isActive()));
         }
+
+        //Testiranje logova
+      boolean uspjesno =  myDb.insertLog(1, "User je rezervirao putovanje u Barcelonu", Calendar.getInstance());
+       ArrayList<MyLog> logs = myDb.getAllLogs();
+        tvBaza.setText(tvBaza.getText().toString() + "\n" + "\nLogovi(" + Integer.toString(logs.size()) + "):\n");
+        for (int i = 0; i < logs.size(); i++) {
+            tvBaza.setText(tvBaza.getText().toString() + "\n" + Integer.toString(logs.get(i).getLogID()) + ", " + Integer.toString(logs.get(i).getUserID()) + "," + Util.CalendarToString(logs.get(i).getDateTime()) + " ," + String.valueOf(logs.get(i).getAction()));
+        }
     }
 }
