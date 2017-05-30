@@ -180,7 +180,6 @@ public class MainActivity extends AppCompatActivity
         testiranje();
     }
 
-
     public void testiranje() {
         //TESTIRANJE FUNKCIJE getallusers sa listom
          ArrayList<User> users = myDb.getAllusers();
@@ -203,7 +202,6 @@ public class MainActivity extends AppCompatActivity
             tvBaza.setText(tvBaza.getText().toString() + "\n" + Integer.toString(flights.get(i).getFlightID()) + ", " + Integer.toString(flights.get(i).getUserID()) + "," + flights.get(i).getDestination() );
         }
 
-
         //Testoramke notesa
         myDb.insertNote(2, 3, "Ovo je sadrzaj biljeske.");
         ArrayList<Note> notes = myDb.getAllNotes();
@@ -211,6 +209,13 @@ public class MainActivity extends AppCompatActivity
         for (int i = 0; i < notes.size(); i++) {
             tvBaza.setText(tvBaza.getText().toString() + "\n" + Integer.toString(notes.get(i).getFlightID()) + ", " + Integer.toString(notes.get(i).getUserID()) + "," + notes.get(i).getContent() );
         }
-    }
 
+        //Testiranje rezervacija
+        myDb.insertReservation(3, 2, Calendar.getInstance(), true);
+        ArrayList<Reservation> reservations = myDb.getAllReservations();
+        tvBaza.setText(tvBaza.getText().toString() + "\n" + "Rezervacije:\n");
+        for (int i = 0; i < reservations.size(); i++) {
+            tvBaza.setText(tvBaza.getText().toString() + "\n" + Integer.toString(reservations.get(i).getUserID()) + ", " + Integer.toString(reservations.get(i).getFlightID()) + "," + Util.CalendarToString(reservations.get(i).getDate()) + " ," + String.valueOf(reservations.get(i).isActive()));
+        }
+    }
 }

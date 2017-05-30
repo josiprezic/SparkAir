@@ -218,6 +218,7 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
         return list;
     }
 
+
     /*******************************************NOTE METHODS***************************************/
     //Insert novih notesa
     public boolean insertNote(int flightID, int userID, String content) {
@@ -233,26 +234,6 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
             return false;
         return true;
     }
-
-
-        /*
-        *
-        *
-    public static final String NOTES_TABLE = "notes";
-    public static final String NOTE_FLIGHT_ID = "flight_id";
-    public static final String NOTE_USER_ID = "user_id";
-    public static final String NOTE_CONTENT = "content";
-
-
-     //Creating table notes
-        db.execSQL("CREATE TABLE " + NOTES_TABLE + " ( " +
-                NOTE_FLIGHT_ID + " INTEGER PRIMARY KEY," +
-                NOTE_USER_ID + " INTEGER," +
-                NOTE_CONTENT + " TEXT)");
-
-
-                 public Note(int flightID, int userID, String content) {
-        * */
 
     ArrayList<Note> getAllNotes() {
         ArrayList<Note> list = new ArrayList<>();
@@ -272,6 +253,40 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
 
 
     /*******************************************RESERVATION METHODS******************************/
+    //Insertanje rezervacija u bazu
+    public boolean insertReservation(int userID, int flightID, Calendar date, boolean active) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(RESERVATION_USER_ID, userID);
+        contentValues.put(RESERVATION_FLIGHT_ID, flightID);
+        contentValues.put(RESERVATION_DATE, Util.CalendarToString(date));
+        contentValues.put(RESERVATION_ACTIVE, active?1:0);
+
+        long result = db.insert(RESERVATIONS_TABLE, null, contentValues);
+        db.close();
+        if(result == -1)
+            return false;
+        return true;
+    }
+
+    //Dobavljanje svih rezervacija iz baze
+    public ArrayList<Reservation> getAllReservations() {
+        ArrayList<Reservation> list = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //Dobavljanje i pohrana u Cursor
+        Cursor c = db.rawQuery("SELECT * FROM " + RESERVATIONS_TABLE, null);
+
+        //Prebacivanje rezervacija u listu
+        if (c != null && c.getCount() > 0) {
+            while (c.moveToNext()) {
+                list.add(new Reservation(c.getInt(0), c.getInt(1), Util.StringToCalendar(c.getString(2)), c.getInt(3) == 1));
+            }
+        }
+        return list;
+    }
+
+
     /*******************************************LOG METHODS**************************************/
 
 
