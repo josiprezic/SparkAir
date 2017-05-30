@@ -123,8 +123,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
-
         //Postavljanje custom adaptera za iduce letove
         final Flight[] flights = new Flight[20];
         for (int i = 0; i < 20; i++) {
@@ -142,13 +140,6 @@ public class MainActivity extends AppCompatActivity
                 Flight flight = flights[position];
             }
         });
-
-
-
-
-
-
-
     }
 
     @Override
@@ -196,6 +187,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.navBuducaPutovanja) {
 
         } else if (id == R.id.navProšlaPutovanja) {
+            Intent intent = new Intent(getApplicationContext(), ProslaPutovanjaActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.navKontakt) {
 
