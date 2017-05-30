@@ -37,27 +37,12 @@
                 android:layout_height="match_parent"
                 android:id="@android:id/tabcontent">
 
-
-                <LinearLayout
-                    android:id="@+id/tabIduciLetovi"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#fff"
-                    android:orientation="vertical">
-
-
-                    <ListView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/main_lvIduciLetovi"
-                        />
-                </LinearLayout>
-
+                <!--TEST TAB POČETAK-->
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/tabTopPonuda"
+                    android:id="@+id/tabTest"
                     android:background="#ffc916"
                     android:orientation="vertical">
 
@@ -73,16 +58,41 @@
                             android:layout_alignParentStart="true"
                             android:layout_marginTop="12dp" />
 
-
-
-
                     </ScrollView>
-
-
-
-
                 </RelativeLayout>
 
+                <!-- TEST TAB KRAJ-->
+
+
+                <LinearLayout
+                    android:id="@+id/tabIduciLetovi"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#fff"
+                    android:orientation="vertical">
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/main_lvIduciLetovi"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tabTopPonuda"
+                    android:background="#ffc916"
+                    android:orientation="vertical">
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/lvTopPonudaLetovi"
+                    />
+
+
+                </LinearLayout>
 
             </FrameLayout>
         </LinearLayout>

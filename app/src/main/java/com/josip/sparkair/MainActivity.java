@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity
     TabHost tabHost;
     DatabaseHelper myDb;
     ListView lvIduciLetovi;
+    ListView lvTopPonudaLetovi;
     public TextView tvBaza;
 
     @Override
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity
 
         myDb = new DatabaseHelper(this);
         lvIduciLetovi = (ListView) findViewById(R.id.main_lvIduciLetovi);
+        lvTopPonudaLetovi = (ListView) findViewById(R.id.lvTopPonudaLetovi);
         tvBaza = (TextView) findViewById(R.id.tvBaza);
 
         //Provjera koji je user logovan
@@ -69,6 +71,12 @@ public class MainActivity extends AppCompatActivity
         spec = host.newTabSpec("Tab Two");
         spec.setContent(R.id.tabIduciLetovi);
         spec.setIndicator("Idući letovi");
+        host.addTab(spec);
+
+        //Tab Test
+        spec = host.newTabSpec("Tab Three");
+        spec.setContent(R.id.tabTest);
+        spec.setIndicator("Test");
         host.addTab(spec);
 
         //Postavljanje toolbara
@@ -97,6 +105,26 @@ public class MainActivity extends AppCompatActivity
         //myDb.insertUser("TestIme", "TestPrezime", "TestUSername", "TestPassword");
 
 
+        //Postavljanje custom adaptera za TopPonuda letove
+        final Flight[] topFlights = new Flight[20];
+        for (int i = 0; i < 20; i++) {
+            topFlights[i] = new Flight(1, 2, "Pariz", Calendar.getInstance(), 400, true);
+        }
+
+        ListAdapter iduciLetoviAdapter1 = new CustomAdapterIduciLetovi(this, topFlights);
+        lvTopPonudaLetovi.setAdapter(iduciLetoviAdapter1);
+        lvTopPonudaLetovi.setClickable(true);
+
+        //Ono sto ce se desiti na klik itema sa liste
+        lvTopPonudaLetovi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Flight flight = topFlights[position];
+            }
+        });
+
+
+
         //Postavljanje custom adaptera za iduce letove
         final Flight[] flights = new Flight[20];
         for (int i = 0; i < 20; i++) {
@@ -114,6 +142,13 @@ public class MainActivity extends AppCompatActivity
                 Flight flight = flights[position];
             }
         });
+
+
+
+
+
+
+
     }
 
     @Override
