@@ -11,7 +11,7 @@ import java.util.Calendar;
 
 public class ProslaPutovanjaActivity extends AppCompatActivity {
 
-    ListView lvProslaPutovanja;
+    public ListView lvProslaPutovanja;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,13 +20,13 @@ public class ProslaPutovanjaActivity extends AppCompatActivity {
 
         lvProslaPutovanja = (ListView) findViewById(R.id.lvProslaPutovanja);
 
-        //Postavljanje custom adaptera za TopPonuda letove
+        //Postavljanje custom adaptera za prosla putovanja
         final Flight[] pastFlights = new Flight[20];
         for (int i = 0; i < 20; i++) {
             pastFlights[i] = new Flight(1, 2, "Prag", Calendar.getInstance(), 400, true);
         }
 
-        ListAdapter iduciLetoviAdapter1 = new CustomAdapterIduciLetovi(this, pastFlights);
+        ListAdapter iduciLetoviAdapter1 = new CustomAdapterFlights(this, pastFlights);
         lvProslaPutovanja.setAdapter(iduciLetoviAdapter1);
         lvProslaPutovanja.setClickable(true);
 

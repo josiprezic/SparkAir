@@ -20,7 +20,8 @@
         </activity>
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".ProslaPutovanjaActivity"></activity>
+        <activity android:name=".ProslaPutovanjaActivity" />
+        <activity android:name=".BuducaPutovanjaActivity"></activity>
     </application>
 
 </manifest>

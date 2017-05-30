@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity
             topFlights[i] = new Flight(1, 2, "Pariz", Calendar.getInstance(), 400, true);
         }
 
-        ListAdapter iduciLetoviAdapter1 = new CustomAdapterIduciLetovi(this, topFlights);
+        ListAdapter iduciLetoviAdapter1 = new CustomAdapterFlights(this, topFlights);
         lvTopPonudaLetovi.setAdapter(iduciLetoviAdapter1);
         lvTopPonudaLetovi.setClickable(true);
 
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity
             flights[i] = new Flight(1, 2, "Barcelona", Calendar.getInstance(), 200, true);
         }
 
-        ListAdapter iduciLetoviAdapter = new CustomAdapterIduciLetovi(this, flights);
+        ListAdapter iduciLetoviAdapter = new CustomAdapterFlights(this, flights);
         lvIduciLetovi.setAdapter(iduciLetoviAdapter);
         lvIduciLetovi.setClickable(true);
 
@@ -185,6 +185,8 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.navPocetna) {
             // Handle the camera action
         } else if (id == R.id.navBuducaPutovanja) {
+            Intent intent = new Intent(getApplicationContext(), BuducaPutovanjaActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.navProšlaPutovanja) {
             Intent intent = new Intent(getApplicationContext(), ProslaPutovanjaActivity.class);

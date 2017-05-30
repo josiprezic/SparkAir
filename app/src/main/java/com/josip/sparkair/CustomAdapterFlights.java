@@ -10,24 +10,21 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Calendar;
-
-
 /**
- * Created by Josip on 29.5.2017..
+ * Created by Josip on 30.5.2017..
  */
 
- class CustomAdapterIduciLetovi extends ArrayAdapter<Flight> {
+class CustomAdapterFlights extends ArrayAdapter<Flight> {
 
-    public CustomAdapterIduciLetovi(Context context, Flight[] flights) {
-        super(context,R.layout.custom_row_iduci_letovi, flights);
+    public CustomAdapterFlights(Context context, Flight[] flights) {
+        super(context,R.layout.custom_row_flights, flights);
     }
 
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater flightInflater = LayoutInflater.from(getContext());
-        View customView = flightInflater.inflate(R.layout.custom_row_iduci_letovi, parent, false);
+        View customView = flightInflater.inflate(R.layout.custom_row_flights, parent, false);
 
         //Get references
         Flight singleFlightItem = getItem(position);
