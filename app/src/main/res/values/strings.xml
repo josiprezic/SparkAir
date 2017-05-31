@@ -5,4 +5,11 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <array name="planets_array">
+        <item>Pocetna</item>
+        <item>Buduca</item>
+        <item>Prosla</item>
+
+    </array>
 </resources>

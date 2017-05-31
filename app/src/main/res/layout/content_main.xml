@@ -90,10 +90,7 @@
                         android:layout_height="match_parent"
                         android:id="@+id/lvTopPonudaLetovi"
                     />
-
-
                 </LinearLayout>
-
             </FrameLayout>
         </LinearLayout>
     </TabHost>

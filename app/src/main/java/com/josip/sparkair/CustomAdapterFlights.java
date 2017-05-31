@@ -1,6 +1,7 @@
 package com.josip.sparkair;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,15 +39,26 @@ class CustomAdapterFlights extends ArrayAdapter<Flight> {
         ImageButton ibRezerviraj = (ImageButton) customView.findViewById(R.id.iduci_ibRezervacija);
         TextView tvBrojRezervacija  = (TextView) customView.findViewById(R.id.iduci_tvBrojRezervacija);
 
+        //Iz nekog razloga su sva slova postala bijela pa ih mijenjam u crna
+        tvOdrediste.setTextColor(Color.BLACK);
+        tvDatum.setTextColor(Color.BLACK);
+        tvVrijeme.setTextColor(Color.BLACK);
+        tvCijena.setTextColor(Color.BLACK);
+        tvBrojRezervacija.setTextColor(Color.BLACK);
 
         ivSlika.setImageResource(R.drawable.logo2);
         tvOdrediste.setText(singleFlightItem.getDestination());
         tvDatum.setText(singleFlightItem.getDateString());
         tvVrijeme.setText(singleFlightItem.getTimeString());
         tvCijena.setText(Double.toString(singleFlightItem.getPrice()) + "KM");
-
-
         tvBrojRezervacija.setText(Integer.toString(4));
+
+        //Iz nekog razloga su sva slova postala bijela pa ih mijenjam u crna
+        tvOdrediste.setTextColor(Color.BLACK);
+        tvDatum.setTextColor(Color.BLACK);
+        tvVrijeme.setTextColor(Color.BLACK);
+        tvCijena.setTextColor(Color.BLACK);
+        tvBrojRezervacija.setTextColor(Color.BLACK);
 
         return customView;
     }
