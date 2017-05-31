@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    //Evo da bacim jedan komentar
     //Itemi iz menija
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
