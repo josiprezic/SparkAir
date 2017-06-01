@@ -46,7 +46,7 @@ class CustomAdapterFlights extends ArrayAdapter<Flight> {
         tvCijena.setTextColor(Color.BLACK);
         tvBrojRezervacija.setTextColor(Color.BLACK);
 
-        ivSlika.setImageResource(R.drawable.logo2);
+        ivSlika.setImageResource(R.drawable.logo_on_transparent);
         tvOdrediste.setText(singleFlightItem.getDestination());
         tvDatum.setText(singleFlightItem.getDateString());
         tvVrijeme.setText(singleFlightItem.getTimeString());

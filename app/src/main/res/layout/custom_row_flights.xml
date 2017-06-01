@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/logo"
+        android:src="@drawable/logo_on_transparent"
         android:id="@+id/iduci_ivLogo"
 
         />
@@ -49,39 +50,46 @@
             />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="81dp"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+            <ImageButton
+                android:id="@+id/iduci_ibBiljeska"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:adjustViewBounds="false"
+                android:contentDescription="View za dodavanje/pregledavanje notesa"
+                android:cropToPadding="false"
+                android:elevation="3dp"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/note_icon" />
 
-                <ImageButton
-                    android:id="@+id/iduci_ibBiljeska"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    />
+            <ImageButton
+                android:id="@+id/iduci_ibRezervacija"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
 
-                <ImageButton
-                    android:id="@+id/iduci_ibRezervacija"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                android:contentDescription="View za dodavanje rezervacije"
+                android:cropToPadding="false"
+                android:elevation="3dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/note_reserve" />
 
-                    />
+        </LinearLayout>
 
-            </LinearLayout>
+        <TextView
+            android:id="@+id/iduci_tvBrojRezervacija"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5" />
 
-            <TextView
-                android:id="@+id/iduci_tvBrojRezervacija"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="5"
-                />
-
-    </LinearLayout>
+</LinearLayout>
 </LinearLayout>
