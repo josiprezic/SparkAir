@@ -21,7 +21,6 @@
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".ProslaPutovanjaActivity" />
-        <activity android:name=".BuducaPutovanjaActivity" />
         <activity android:name=".BaseActivity"></activity>
     </application>
 
