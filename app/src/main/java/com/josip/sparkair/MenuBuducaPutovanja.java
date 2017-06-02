@@ -35,8 +35,6 @@ public class MenuBuducaPutovanja extends Fragment{
 
         lvBuducaPutovanjaa = (ListView) getView().findViewById(R.id.lvBuducaPutovanjaa);
 
-
-
         //Postavljanje custom adaptera za buduca putovanja
         final Flight[] futureFlights = new Flight[20];
         for (int i = 0; i < 20; i++) {
