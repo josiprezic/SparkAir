@@ -27,11 +27,7 @@ public class MenuBuducaPutovanja extends Fragment{
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getActivity().setTitle("Buduca Putovanja");
-
         Toast.makeText(getActivity().getApplicationContext(), "onViewCreated", Toast.LENGTH_SHORT);
-
-        //Kopirano pocetak
 
         lvBuducaPutovanjaa = (ListView) getView().findViewById(R.id.lvBuducaPutovanjaa);
 
@@ -52,9 +48,6 @@ public class MenuBuducaPutovanja extends Fragment{
                 Flight flight = futureFlights[position];
             }
         });
-
-
-        //kopirano kraj
 
     }
 

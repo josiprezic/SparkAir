@@ -33,11 +33,10 @@ import com.josip.sparkair.Util.Util;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    TabHost host;
+    TabHost tabHost;
     DatabaseHelper myDb;
     ListView lvIduciLetovi;
     ListView lvTopPonudaLetovi;
@@ -68,26 +67,26 @@ public class MainActivity extends AppCompatActivity
 
         //Postavnjanje tabTostova
         //TabHost
-        host = (TabHost) findViewById(R.id.tabHost);
-        host.setup();
+        tabHost = (TabHost) findViewById(R.id.tabHost);
+        tabHost.setup();
 
         //Tab Top Ponuda
-        TabHost.TabSpec spec = host.newTabSpec("Tab One");
+        TabHost.TabSpec spec = tabHost.newTabSpec("Tab One");
         spec.setContent(R.id.tabTopPonuda);
         spec.setIndicator("Top ponuda");
-        host.addTab(spec);
+        tabHost.addTab(spec);
 
         //Tab Iduci letovi
-        spec = host.newTabSpec("Tab Two");
+        spec = tabHost.newTabSpec("Tab Two");
         spec.setContent(R.id.tabIduciLetovi);
         spec.setIndicator("Idući letovi");
-        host.addTab(spec);
+        tabHost.addTab(spec);
 
         //Tab Test
-        spec = host.newTabSpec("Tab Three");
+        spec = tabHost.newTabSpec("Tab Three");
         spec.setContent(R.id.tabTest);
         spec.setIndicator("Test");
-        host.addTab(spec);
+        tabHost.addTab(spec);
 
         //Dohvaćanje spremljenih podataka nakon rotacije screena
         // i postavljanje trenutno otvorenog fragmenta i ukljucivanje i iskljucivanje tabhosta
@@ -97,6 +96,7 @@ public class MainActivity extends AppCompatActivity
         }
         else {
             currentFragment = POCETNA;
+
         }
 
         //Postavljanje toolbara
@@ -121,9 +121,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        //myDb.insertUser("TestIme", "TestPrezime", "TestUSername", "TestPassword");
-
 
         //Postavljanje custom adaptera za TopPonuda letove
         final Flight[] topFlights = new Flight[20];
@@ -177,8 +174,6 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         navDrawerMenu = menu;
-
-
         return true;
     }
 
@@ -205,15 +200,16 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
             case R.id.navBuducaPutovanja:
                 fragment = new MenuBuducaPutovanja();
+                currentFragment = BUDUCA_PUTOVANJA;
                 break;
 
             case R.id.navPocetna:
-
+                currentFragment = POCETNA;
                 break;
         }
 
         if (fragment != null) {
-            currentFragment = id;
+          //  currentFragment = id;
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_main, fragment);
             ft.commit();
@@ -231,40 +227,30 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.navPocetna) {
 
-        } else if (id == R.id.navBuducaPutovanja) {
-
-
-        } else if (id == R.id.navProšlaPutovanja) {
-            Intent intent = new Intent(getApplicationContext(), ProslaPutovanjaActivity.class);
-            startActivity(intent);
-
-        } else if (id == R.id.navKontakt) {
-
-        }
-        else if (id == R.id.nav_odjava) {
-
-        }
 
         if (id == R.id.navPocetna) {
 
-            host.setVisibility(View.VISIBLE);
+            tabHost.setVisibility(View.VISIBLE);
+            tabHost.setCurrentTab(0);
+
         } else {
-            host.setVisibility(View.GONE);
+            tabHost.setVisibility(View.GONE);
         }
         displaySelectedScreen(id);
 
         return true;
     }
 
+    //Samo radi testiranja
     @Override
     protected void onResume() {
         super.onResume();
-        testiranje();
+        //testiranje();
 
     }
 
+    //Izbrisati kasnije
     public void testiranje() {
         //TESTIRANJE FUNKCIJE getallusers sa listom
          ArrayList<User> users = myDb.getAllusers();
@@ -320,51 +306,49 @@ public class MainActivity extends AppCompatActivity
     protected void onSaveInstanceState(Bundle outState) {
 
         outState.putInt(TRENUTNI_FRAGMENT, currentFragment);
-        outState.putInt(TRENUTNI_TAB, host.getCurrentTab());
+        outState.putInt(TRENUTNI_TAB, tabHost.getCurrentTab());
         super.onSaveInstanceState(outState);
 
     }
 
+    //Vraca otvoreni trenutni tab nakon rotacije screena
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-
         super.onRestoreInstanceState(savedInstanceState);
-
         if (savedInstanceState != null) {
-            host.setCurrentTab(savedInstanceState.getInt(TRENUTNI_TAB));
+            tabHost.setCurrentTab(savedInstanceState.getInt(TRENUTNI_TAB));
         }
-
-
     }
 
-
+    //Pokrece spremljeni fragment nakon rotacije screena
     private void setSpremljeniFragment(int spremljeniFragmentID) {
         Fragment fragment;
         switch (spremljeniFragmentID)  {
             case POCETNA:
-                host.setVisibility(View.VISIBLE);
+                tabHost.setVisibility(View.VISIBLE);
+                currentFragment = POCETNA;
                 return;
-                //break;
+            //break;
             case BUDUCA_PUTOVANJA:
                 fragment = new MenuBuducaPutovanja();
+                currentFragment = BUDUCA_PUTOVANJA;
                 break;
             case PROSLA_PUTOVANJA:
                 fragment = new MenuBuducaPutovanja();
+                currentFragment = PROSLA_PUTOVANJA;
                 break;
             case KONTAKT:
                 fragment = new MenuBuducaPutovanja();
+                currentFragment = KONTAKT;
                 break;
             default:
                 fragment = new MenuBuducaPutovanja();
                 break;
 
         }
-        host.setVisibility(View.GONE);
-
+        tabHost.setVisibility(View.GONE);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_main, fragment);
         ft.commit();
     }
-
-
 }
