@@ -181,6 +181,21 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
     }
 
 
+    public User getUserInfo(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor c = null;
+        c = db.rawQuery("SELECT * FROM " + USERS_TABLE + " WHERE " + USER_ID + "=" + Integer.toString(id), null);
+        //db.close();
+        if(c!= null && c.getCount() > 0){
+            c.moveToNext();
+            //User w  = new User(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getInt(5), c.getInt(6) == 1, c.getInt(7));
+            User u = new User(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5), c.getInt(6) == 1, c.getInt(7));
+            return  u;
+        }
+        return new User();
+    }
+
+
     /*******************************************FLIGHT METHODS*************************************/
     //Insert novih flight-ova
     public boolean insertFlight(int userID, String destination, Calendar dateTime, double price, boolean active) {

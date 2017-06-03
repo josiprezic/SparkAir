@@ -13,6 +13,13 @@
     <item
         android:id="@+id/actionSignIn"
         android:orderInCategory="1"
-        android:title="Sign in"
+        android:title="Prijavi se"
+        />
+
+    <item
+        android:id="@+id/actionLogOut"
+        android:orderInCategory="2"
+        android:title="Odjavi se"
+        android:visible="true"
         />
 </menu>

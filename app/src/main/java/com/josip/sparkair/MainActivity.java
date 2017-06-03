@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity
     ListView lvTopPonudaLetovi;
     public TextView tvBaza;
     Menu navDrawerMenu;
+    NavigationView navigationView;
+
 
     public static final String TRENUTNI_FRAGMENT = "trenutniFragment";
     public static final int POCETNA = R.id.navPocetna;
@@ -60,10 +63,11 @@ public class MainActivity extends AppCompatActivity
         lvIduciLetovi = (ListView) findViewById(R.id.main_lvIduciLetovi);
         lvTopPonudaLetovi = (ListView) findViewById(R.id.lvTopPonudaLetovi);
         tvBaza = (TextView) findViewById(R.id.tvBaza);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         //Provjera koji je user logovan
-        User currentUser = Util.getCurrentUser(getApplicationContext());
-        tvBaza.setText("Current user: " +  Integer.toString(currentUser.getUserID()) + ", " + currentUser.getUsername() + ", " + currentUser.getPassword() + "\n");
+        //User currentUser = Util.getCurrentUser(getApplicationContext());
+        //tvBaza.setText("Current user: " +  Integer.toString(currentUser.getUserID()) + ", " + currentUser.getUsername() + ", " + currentUser.getPassword() + "\n");
 
         //Postavnjanje tabTostova
         //TabHost
@@ -112,6 +116,8 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        });
 
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -156,6 +162,7 @@ public class MainActivity extends AppCompatActivity
                 Flight flight = flights[position];
             }
         });
+
     }
 
     @Override
@@ -166,6 +173,35 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+
+    //Menu u gornjem desnom kutu
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        //Provjera da li je user logovan i ako jest prikazati opciju logOut
+        //Ako nije logovan prikazati opciju login
+        User user = Util.getCurrentUser(getApplicationContext());
+        Menu nav_Menu = navigationView.getMenu(); //dravable menu
+
+        if (user.getUserID() == -1) {
+            //trenutni user je gost, prikazati samo login opciju
+            menu.findItem(R.id.actionLogOut).setVisible(false);
+            menu.findItem(R.id.actionSignIn).setVisible(true);
+            //Uredjivanje opcije u navigation draweru
+            nav_Menu.findItem(R.id.nav_odjava).setVisible(false);
+
+        }
+        else {
+            //user je logiran, prikazati samo logout opciju
+            menu.findItem(R.id.actionLogOut).setVisible(true);
+            menu.findItem(R.id.actionSignIn).setVisible(false);
+            //Uredjivanje opcije u navigation draweru
+            nav_Menu.findItem(R.id.nav_odjava).setVisible(true);
+        }
+        invalidateOptionsMenu();
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -187,6 +223,12 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.actionSignIn) {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
+            return true;
+        }
+        else if (id == R.id.actionLogOut) {
+            Util.odjaviSe(getApplicationContext());
+            Toast.makeText(this, "Odjavili ste se", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -233,10 +275,15 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        if (id == R.id.nav_odjava) {
+            Util.odjaviSe(getApplicationContext());
+            id = R.id.navPocetna;
+        }
         if (id == R.id.navPocetna) {
             tabHost.setVisibility(View.VISIBLE);
             tabHost.setCurrentTab(0);
-        } else {
+        }
+        else {
             tabHost.setVisibility(View.GONE);
         }
         displaySelectedScreen(id);
@@ -248,11 +295,16 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         testiranje();
-
     }
 
     //Izbrisati kasnije
     public void testiranje() {
+
+        //Provjera koji je user logovan
+        User currentUser = Util.getCurrentUser(getApplicationContext());
+        Toast.makeText(this, "Current user:" + Integer.toString(currentUser.getUserID()), Toast.LENGTH_SHORT).show();
+        tvBaza.setText("Current user: " +  Integer.toString(currentUser.getUserID()) + ", " + currentUser.getUsername() + ", " + currentUser.getPassword() + "\n");
+
         //TESTIRANJE FUNKCIJE getallusers sa listom
          ArrayList<User> users = myDb.getAllusers();
 
@@ -352,4 +404,12 @@ public class MainActivity extends AppCompatActivity
         ft.replace(R.id.content_main, fragment);
         ft.commit();
     }
+
+    private void hideItem()
+    {
+        Menu nav_Menu = navigationView.getMenu();
+        nav_Menu.findItem(R.id.nav_odjava).setVisible(false);
+    }
+
+
 }

@@ -8,6 +8,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,15 +21,14 @@ public class LoginActivity extends AppCompatActivity {
     public EditText etPassword;
     public Button btLogin;
     public TextView tvNotAMember;
+    public DatabaseHelper myDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
-
-
+        myDb = new DatabaseHelper(this);
         etUsername = (EditText) findViewById(R.id.login_etUsername);
         etPassword = (EditText) findViewById(R.id.login_etPassword);
         btLogin = (Button) findViewById(R.id.login_btLogin);
@@ -74,7 +74,9 @@ public class LoginActivity extends AppCompatActivity {
             etPassword.setText("");
 
             //Spremanje korisnika u sharedPreferences
-            saveInfo(username, password);
+            saveInfo(user);
+
+
 
 
             //*************************************************************************************
@@ -87,27 +89,25 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //Spremanje informacija o trenutnom useru u shared preferences
-    public void saveInfo(String username, String password) {
+    public void saveInfo(User user) {
         SharedPreferences settings = getSharedPreferences("UserInfo", 0);
-
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString("username", username);
-        editor.putString("password", password);
+        //editor.putString("username", user.getUsername());
+        editor.putInt("currentUserID", user.getUserID());
         editor.apply();
 
-        Toast.makeText(getApplicationContext(), "Saved in SP", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "Saved in SP", Toast.LENGTH_SHORT).show();
     }
 
     //Vraca trenutnog usera
-    public void getCurrentUser() {
+    public User getCurrentUser() {
         SharedPreferences settings = getSharedPreferences("UserInfo", 0);
 
-        String username = settings.getString("username", "guest");
-        String password = settings.getString("password", "guest");
-
-
-        Toast.makeText(getApplicationContext(), username + " " + password, Toast.LENGTH_SHORT).show();
-
+        //String username = settings.getString("username", "guest");
+        //String password = settings.getString("password", "guest");
+        //Toast.makeText(getApplicationContext(), username + " " + password, Toast.LENGTH_SHORT).show();
+        int userID = settings.getInt("currentUserID", -1);
+        return myDb.getUserInfo(userID);
     }
 
 

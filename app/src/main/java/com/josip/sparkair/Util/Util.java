@@ -2,6 +2,7 @@ package com.josip.sparkair.Util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.provider.ContactsContract;
 
 import com.josip.sparkair.DatabaseHelper;
 import com.josip.sparkair.MainActivity;
@@ -49,21 +50,36 @@ public class Util {
     }
 
 
-    public static User getCurrentUser(Context context) {
-        //Provjera da li je user shared preferences
-        SharedPreferences settings = context.getSharedPreferences("UserInfo", 0);
-        String username = settings.getString("username", "guest");
-        String password = settings.getString("password", "guest");
+    //   public static User getCurrentUser(Context context) {
+//        //Provjera da li je user u shared preferences
+//        SharedPreferences settings = context.getSharedPreferences("UserInfo", 0);
+//        String username = settings.getString("username", "guest");
+//        String password = settings.getString("password", "guest");
+//
+//        if(username.equals("guest")) {
+//            return new User(-1, "guest", "guest", "Guest", "Guest", "slika", true, -1);
+//        }
+//
+//        DatabaseHelper myDb = new DatabaseHelper(context);
+//        return myDb.getUserInfo(username, password);
+//
+//
+//    }
 
-        if(username.equals("guest")) {
-            return new User(-1, "guest", "guest", "Guest", "Guest", "slika", true, -1);
-        }
+    //Dobavljanje trenutnog usera -- nova verzija
+    public static User getCurrentUser(Context context) {
+        SharedPreferences settings = context.getSharedPreferences("UserInfo", 0);
+        int userID = settings.getInt("currentUserID", -1);
 
         DatabaseHelper myDb = new DatabaseHelper(context);
-        return myDb.getUserInfo(username, password);
-
-        //Toast.makeText(getApplicationContext(), username + " " + password, Toast.LENGTH_SHORT).show();
+        return myDb.getUserInfo(userID);
     }
 
+    public static void odjaviSe(Context context) {
+        SharedPreferences settings = context.getSharedPreferences("UserInfo", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt("currentUserID", -1);
+        editor.apply();
 
+    }
 }
