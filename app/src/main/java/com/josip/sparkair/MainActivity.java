@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity
         }
         else {
             currentFragment = POCETNA;
-
         }
 
         //Postavljanje toolbara
@@ -209,7 +208,10 @@ public class MainActivity extends AppCompatActivity
                 fragment = new MenuProslaPutovanja();
                 currentFragment = PROSLA_PUTOVANJA;
                 break;
-
+            case KONTAKT:
+                fragment = new MenuKontakt();
+                currentFragment = KONTAKT;
+                break;
         }
 
         if (fragment != null) {
@@ -337,7 +339,7 @@ public class MainActivity extends AppCompatActivity
                 currentFragment = PROSLA_PUTOVANJA;
                 break;
             case KONTAKT:
-                fragment = new MenuBuducaPutovanja();
+                fragment = new MenuKontakt();
                 currentFragment = KONTAKT;
                 break;
             default:
