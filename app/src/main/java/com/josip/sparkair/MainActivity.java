@@ -198,14 +198,18 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
 
         switch (id) {
-            case R.id.navBuducaPutovanja:
+            case POCETNA:
+                currentFragment = POCETNA;
+                break;
+            case BUDUCA_PUTOVANJA:
                 fragment = new MenuBuducaPutovanja();
                 currentFragment = BUDUCA_PUTOVANJA;
                 break;
-
-            case R.id.navPocetna:
-                currentFragment = POCETNA;
+            case PROSLA_PUTOVANJA:
+                fragment = new MenuProslaPutovanja();
+                currentFragment = PROSLA_PUTOVANJA;
                 break;
+
         }
 
         if (fragment != null) {
@@ -227,18 +231,13 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-
-
         if (id == R.id.navPocetna) {
-
             tabHost.setVisibility(View.VISIBLE);
             tabHost.setCurrentTab(0);
-
         } else {
             tabHost.setVisibility(View.GONE);
         }
         displaySelectedScreen(id);
-
         return true;
     }
 
@@ -246,7 +245,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        //testiranje();
+        testiranje();
 
     }
 
@@ -334,7 +333,7 @@ public class MainActivity extends AppCompatActivity
                 currentFragment = BUDUCA_PUTOVANJA;
                 break;
             case PROSLA_PUTOVANJA:
-                fragment = new MenuBuducaPutovanja();
+                fragment = new MenuProslaPutovanja();
                 currentFragment = PROSLA_PUTOVANJA;
                 break;
             case KONTAKT:

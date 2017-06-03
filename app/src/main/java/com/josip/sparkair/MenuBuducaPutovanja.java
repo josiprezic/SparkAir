@@ -26,9 +26,6 @@ public class MenuBuducaPutovanja extends Fragment{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        Toast.makeText(getActivity().getApplicationContext(), "onViewCreated", Toast.LENGTH_SHORT);
-
         lvBuducaPutovanjaa = (ListView) getView().findViewById(R.id.lvBuducaPutovanjaa);
 
         //Postavljanje custom adaptera za buduca putovanja
@@ -54,9 +51,6 @@ public class MenuBuducaPutovanja extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        Toast.makeText(getActivity().getApplicationContext(), "onCreateView", Toast.LENGTH_SHORT);
-
         return inflater.inflate(R.layout.menu_buduca_putovanja, container, false);
     }
 }
