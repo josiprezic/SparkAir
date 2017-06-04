@@ -25,10 +25,12 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity
     Menu navDrawerMenu;
     NavigationView navigationView;
     User currentUser;
+    ImageButton profileBox_btPostavke;
 
     public static final String TRENUTNI_FRAGMENT = "trenutniFragment";
     public static final int POCETNA = R.id.navPocetna;
@@ -76,6 +79,7 @@ public class MainActivity extends AppCompatActivity
         tvBaza = (TextView) findViewById(R.id.tvBaza);
         //referenciranje navigation viewa
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        profileBox_btPostavke = (ImageButton) findViewById(R.id.profileBox_btPostavke);
 
         currentUser = Util.getCurrentUser(getApplicationContext());
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -204,7 +208,7 @@ public class MainActivity extends AppCompatActivity
         TextView profileBox_tvOstaleInformacije = (TextView) findViewById(R.id.profileBox_tvOstaleInformacije);
         
         //Postavljanje onClickListenera za profile box
-        LinearLayout profileBoxHeader = (LinearLayout) findViewById(R.id.navProfileBox);
+        RelativeLayout profileBoxHeader = (RelativeLayout) findViewById(R.id.navProfileBox);
         profileBoxHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -214,6 +218,9 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+        
+        
+
 
         profileBox_tvImePrezime.setText(currentUser.getName() + " " + currentUser.getSurname());
         if (currentUser.getType() == -1) {
@@ -248,6 +255,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+
+
+
         getMenuInflater().inflate(R.menu.main, menu);
         navDrawerMenu = menu;
         return true;
@@ -448,4 +458,9 @@ public class MainActivity extends AppCompatActivity
         ft.commit();
     }
 
+
+    public void onPostakeButtonClick(View view) {
+        startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+        drawer.closeDrawer(GravityCompat.START);
+    }
 }

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
     android:background="@drawable/side_nav_bar"
-    android:gravity="bottom"
-    android:orientation="vertical"
+
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -21,8 +20,11 @@
         android:id="@+id/profileBox_ivProfilnaSlika"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@android:drawable/sym_def_app_icon" />
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="15dp"
+        app:srcCompat="@android:drawable/sym_def_app_icon"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/profileBox_tvImePrezime"
@@ -32,6 +34,7 @@
         android:paddingLeft="15dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="Guest"
+        android:layout_below="@+id/profileBox_ivProfilnaSlika"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
@@ -39,6 +42,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="15dp"
-        android:text="Guest account" />
+        android:text="Guest account"
+        android:layout_below="@+id/profileBox_tvImePrezime"
+        />
 
-</LinearLayout>
+    <ImageButton
+        android:id="@+id/profileBox_btPostavke"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentEnd="true"
+        android:onClick="onPostakeButtonClick"
+        />
+
+
+
+</RelativeLayout>
