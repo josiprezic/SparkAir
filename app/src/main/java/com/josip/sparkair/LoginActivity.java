@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,11 +76,8 @@ public class LoginActivity extends AppCompatActivity {
 
             //Spremanje korisnika u sharedPreferences
             saveInfo(user);
-
-
-
-
-            //*************************************************************************************
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
             return true;
         }
     }
@@ -95,20 +93,5 @@ public class LoginActivity extends AppCompatActivity {
         //editor.putString("username", user.getUsername());
         editor.putInt("currentUserID", user.getUserID());
         editor.apply();
-
-        //Toast.makeText(getApplicationContext(), "Saved in SP", Toast.LENGTH_SHORT).show();
     }
-
-    //Vraca trenutnog usera
-    public User getCurrentUser() {
-        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
-
-        //String username = settings.getString("username", "guest");
-        //String password = settings.getString("password", "guest");
-        //Toast.makeText(getApplicationContext(), username + " " + password, Toast.LENGTH_SHORT).show();
-        int userID = settings.getInt("currentUserID", -1);
-        return myDb.getUserInfo(userID);
-    }
-
-
 }

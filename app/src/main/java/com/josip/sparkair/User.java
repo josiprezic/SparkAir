@@ -13,7 +13,7 @@ public class User {
     private String surname;
     private String image;
     private boolean active;
-    private int type;
+    private int type; // (-1) = guest, 1 = obicni user, 2 = admin
 
 
     public User(int userID, String username, String password, String name, String surname, String image, boolean active, int type) {
@@ -29,10 +29,10 @@ public class User {
 
     public User() {
         userID = -1;
-        username = "(empty)";
-        password = "(empty)";
-        name = "empty";
-        surname = "empty";
+        username = "Guest";
+        password = "Guest";
+        name = "Guest";
+        surname = " ";
         image = "slika";
         active = false;
         type = -1;

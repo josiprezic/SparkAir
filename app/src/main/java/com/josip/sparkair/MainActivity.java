@@ -1,5 +1,6 @@
 package com.josip.sparkair;
 
+import android.media.Image;
 import android.support.v4.app.Fragment;
 //import android.app.Fragment;
 import android.content.Intent;
@@ -23,6 +24,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -41,10 +44,9 @@ public class MainActivity extends AppCompatActivity
     DatabaseHelper myDb;
     ListView lvIduciLetovi;
     ListView lvTopPonudaLetovi;
-    public TextView tvBaza;
+    TextView tvBaza;
     Menu navDrawerMenu;
     NavigationView navigationView;
-
 
     public static final String TRENUTNI_FRAGMENT = "trenutniFragment";
     public static final int POCETNA = R.id.navPocetna;
@@ -59,15 +61,17 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //potrebno za rad s bazom
         myDb = new DatabaseHelper(this);
+
+        //referenciranje listi za buduca i prosla putovanja
         lvIduciLetovi = (ListView) findViewById(R.id.main_lvIduciLetovi);
         lvTopPonudaLetovi = (ListView) findViewById(R.id.lvTopPonudaLetovi);
+        //tv baza sluzi za testiranje kasnije se moze izbrisati
         tvBaza = (TextView) findViewById(R.id.tvBaza);
+        //referenciranje navigation viewa
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
-        //Provjera koji je user logovan
-        //User currentUser = Util.getCurrentUser(getApplicationContext());
-        //tvBaza.setText("Current user: " +  Integer.toString(currentUser.getUserID()) + ", " + currentUser.getUsername() + ", " + currentUser.getPassword() + "\n");
 
         //Postavnjanje tabTostova
         //TabHost
@@ -175,7 +179,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
     //Menu u gornjem desnom kutu
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -184,22 +187,38 @@ public class MainActivity extends AppCompatActivity
         //Ako nije logovan prikazati opciju login
         User user = Util.getCurrentUser(getApplicationContext());
         Menu nav_Menu = navigationView.getMenu(); //dravable menu
+        //Profile box - referenciranje objekata
+        ImageView profileBox_ivProfilnaSlika = (ImageView) findViewById(R.id.profileBox_ivProfilnaSlika);
+        TextView profileBox_tvImePrezime = (TextView) findViewById(R.id.profileBox_tvImePrezime);
+        TextView profileBox_tvOstaleInformacije = (TextView) findViewById(R.id.profileBox_tvOstaleInformacije);
 
-        if (user.getUserID() == -1) {
+        profileBox_tvImePrezime.setText(user.getName() + " " + user.getSurname());
+        if (user.getType() == -1) {
             //trenutni user je gost, prikazati samo login opciju
             menu.findItem(R.id.actionLogOut).setVisible(false);
             menu.findItem(R.id.actionSignIn).setVisible(true);
-            //Uredjivanje opcije u navigation draweru
+            //iskljucitanje opcije odjava u navigation draweru
             nav_Menu.findItem(R.id.nav_odjava).setVisible(false);
-
+            //mijenjanje informacija u profile boxu
+            profileBox_tvOstaleInformacije.setText("Guest account");
         }
-        else {
-            //user je logiran, prikazati samo logout opciju
+        else{
+            // user je logiran, prikazati samo logout opciju
             menu.findItem(R.id.actionLogOut).setVisible(true);
             menu.findItem(R.id.actionSignIn).setVisible(false);
-            //Uredjivanje opcije u navigation draweru
+            //ukljucivanje opcije logout u navigation draweru
             nav_Menu.findItem(R.id.nav_odjava).setVisible(true);
+            //Mijenjanje informacija u profile boxu
+            profileBox_tvOstaleInformacije.setText("Korisnik");
         }
+
+        //Dodatne stvari za ADMIN account
+        if (user.getType() == 2) {
+            //Mijenjanje informacija u profile boxu
+            profileBox_tvOstaleInformacije.setText("ADMIN");
+        }
+
+
         invalidateOptionsMenu();
         return super.onPrepareOptionsMenu(menu);
     }
@@ -266,7 +285,6 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
     }
-
 
     //Odabir itema sa menija
     @SuppressWarnings("StatementWithEmptyBody")
@@ -349,10 +367,7 @@ public class MainActivity extends AppCompatActivity
         for (int i = 0; i < logs.size(); i++) {
             tvBaza.setText(tvBaza.getText().toString() + "\n" + Integer.toString(logs.get(i).getLogID()) + ", " + Integer.toString(logs.get(i).getUserID()) + "," + Util.CalendarToString(logs.get(i).getDateTime()) + " ," + String.valueOf(logs.get(i).getAction()));
         }
-
-      // host.setCurrentTab(2);
     }
-
 
     //Spremanje informacija u slucaju rotacije screena
     @Override
@@ -361,7 +376,6 @@ public class MainActivity extends AppCompatActivity
         outState.putInt(TRENUTNI_FRAGMENT, currentFragment);
         outState.putInt(TRENUTNI_TAB, tabHost.getCurrentTab());
         super.onSaveInstanceState(outState);
-
     }
 
     //Vraca otvoreni trenutni tab nakon rotacije screena
@@ -397,19 +411,11 @@ public class MainActivity extends AppCompatActivity
             default:
                 fragment = new MenuBuducaPutovanja();
                 break;
-
         }
         tabHost.setVisibility(View.GONE);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_main, fragment);
         ft.commit();
     }
-
-    private void hideItem()
-    {
-        Menu nav_Menu = navigationView.getMenu();
-        nav_Menu.findItem(R.id.nav_odjava).setVisible(false);
-    }
-
 
 }
