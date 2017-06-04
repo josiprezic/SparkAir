@@ -11,13 +11,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 /**
  * Created by Josip on 30.5.2017..
  */
 
 class CustomAdapterFlights extends ArrayAdapter<Flight> {
 
-    public CustomAdapterFlights(Context context, Flight[] flights) {
+    public CustomAdapterFlights(Context context, ArrayList<Flight> flights) {
         super(context,R.layout.custom_row_flights, flights);
     }
 
@@ -51,7 +53,7 @@ class CustomAdapterFlights extends ArrayAdapter<Flight> {
         tvDatum.setText(singleFlightItem.getDateString());
         tvVrijeme.setText(singleFlightItem.getTimeString());
         tvCijena.setText(Double.toString(singleFlightItem.getPrice()) + "KM");
-        tvBrojRezervacija.setText(Integer.toString(4));
+        tvBrojRezervacija.setText(Integer.toString(singleFlightItem.getBrojRezervacija()));
 
         //Iz nekog razloga su sva slova postala bijela pa ih mijenjam u crna
         tvOdrediste.setTextColor(Color.BLACK);
@@ -62,4 +64,6 @@ class CustomAdapterFlights extends ArrayAdapter<Flight> {
 
         return customView;
     }
+
+
 }

@@ -20,7 +20,7 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
 
     //Names of database, versions, tables and columns
     private static final String DATABASE_NAME = "SparkAir.db";
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
 
     //TABLE USERS
     public static final String USERS_TABLE = "users";
@@ -41,6 +41,7 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
     public static final String FLIGHT_DATE_TIME = "date_time";
     public static final String FLIGHT_PRICE = "price";
     public static final String FLIGHT_ACTIVE = "active";
+    public static final String FLIGHT_NUMBER_OF_RESERVATIONS = "number_of_reservations";
 
     //TABLE NOTES
     public static final String NOTES_TABLE = "notes";
@@ -89,7 +90,8 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
                 FLIGHT_DESTINATION + " TEXT," +
                 FLIGHT_DATE_TIME + " TEXT," +
                 FLIGHT_PRICE + " REAL," +
-                FLIGHT_ACTIVE + " INTEGER)"); //" +
+                FLIGHT_ACTIVE + " INTEGER," +
+                FLIGHT_NUMBER_OF_RESERVATIONS + " INTEGER)"); //" +
                 //" FOREIGN KEY(" + FLIGHT_USER_ID + ") REFERENCES " + USERS_TABLE + "(" + USER_ID + "))");
 
         //Creating table notes
@@ -219,6 +221,7 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
         contentValues.put(FLIGHT_DATE_TIME, Util.CalendarToString(dateTime));
         contentValues.put(FLIGHT_PRICE, price);
         contentValues.put(FLIGHT_ACTIVE, active?1:0);
+        contentValues.put(FLIGHT_NUMBER_OF_RESERVATIONS, 0);
 
         long result = db.insert(FLIGHTS_TABLE, null, contentValues);
         db.close();
@@ -238,7 +241,7 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
         //Ubacivanje flight-ova u listu
         if(c!= null && c.getCount() > 0) {
             while(c.moveToNext()) {
-                list.add(new Flight(c.getInt(0), c.getInt(1), c.getString(2), Util.StringToCalendar(c.getString(3)), c.getFloat(4), c.getInt(5) == 1));
+                list.add(new Flight(c.getInt(0), c.getInt(1), c.getString(2), Util.StringToCalendar(c.getString(3)), c.getFloat(4), c.getInt(5) == 1, c.getInt(6)));
             }
 
             c.close();
@@ -295,8 +298,19 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
         contentValues.put(RESERVATION_DATE, Util.CalendarToString(date));
         contentValues.put(RESERVATION_ACTIVE, active?1:0);
 
+
         long result = db.insert(RESERVATIONS_TABLE, null, contentValues);
         db.close();
+
+        int noviBrojRezervacija = getNumberOfReservations(flightID);
+
+        //Update rezervacija na flight tableli
+        SQLiteDatabase db2 = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(FLIGHT_NUMBER_OF_RESERVATIONS, noviBrojRezervacija);
+        db2.update(FLIGHTS_TABLE, cv, FLIGHT_ID + "=" + Integer.toString(flightID) , null);
+        db2.close();
+
         if(result == -1)
             return false;
         return true;
@@ -320,6 +334,17 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
         }
         db.close();
         return list;
+    }
+
+    public int getNumberOfReservations(int flightID) {
+        ArrayList<Reservation> reservations = getAllReservations();
+        int brojacRezervacija = 0;
+        for (Reservation r: reservations) {
+            if (r.getFlightID() == flightID){
+                brojacRezervacija++;
+            }
+        }
+        return brojacRezervacija;
     }
 
 

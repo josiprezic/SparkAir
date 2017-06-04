@@ -39,6 +39,8 @@ import com.josip.sparkair.Util.Util;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
     User currentUser;
     ImageButton profileBox_btPostavke;
+    ListAdapter TopPonudaLetoviAdapter;
+    ListAdapter IduciLetoviAdapter;
 
     public static final String TRENUTNI_FRAGMENT = "trenutniFragment";
     public static final int POCETNA = R.id.navPocetna;
@@ -87,7 +91,7 @@ public class MainActivity extends AppCompatActivity
         //FloatingButtonZaDodavanjeLetova
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        //Postavnjanje tabTostova
+        //Postavljanje Tabova
         //TabHost
         tabHost = (TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
@@ -125,15 +129,12 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         //Floating button za dodavanje novih letova
-
         fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), AddFlightActivity.class ));
             }
         });
-
-
 
         //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -144,39 +145,39 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Postavljanje custom adaptera za TopPonuda letove
-        final Flight[] topFlights = new Flight[20];
-        for (int i = 0; i < 20; i++) {
-            topFlights[i] = new Flight(1, 2, "Pariz", Calendar.getInstance(), 400, true);
-        }
+        //Trazi i prikazuje top ponuda letove
+        final ArrayList<Flight> topFlights = getTopPonuda();
+//        for (int i = 0; i < 20; i++) {
+//            topFlights[i] = new Flight(1, 2, "Pariz", Calendar.getInstance(), 400, true);
+//        }
 
-        ListAdapter iduciLetoviAdapter1 = new CustomAdapterFlights(this, topFlights);
-        lvTopPonudaLetovi.setAdapter(iduciLetoviAdapter1);
+        TopPonudaLetoviAdapter = new CustomAdapterFlights(this, topFlights);
+        lvTopPonudaLetovi.setAdapter(TopPonudaLetoviAdapter);
         lvTopPonudaLetovi.setClickable(true);
 
         //Ono sto ce se desiti na klik itema sa liste
         lvTopPonudaLetovi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Flight flight = topFlights[position];
+                Flight flight = topFlights.get(position);
             }
         });
 
         //Postavljanje custom adaptera za iduce letove
-        final Flight[] flights = new Flight[20];
-        for (int i = 0; i < 20; i++) {
-            flights[i] = new Flight(1, 2, "Barcelona", Calendar.getInstance(), 200, true);
-        }
+        final ArrayList<Flight> flights = getTopPonuda();
+//        for (int i = 0; i < 20; i++) {
+//            flights[i] = new Flight(1, 2, "Barcelona", Calendar.getInstance(), 200, true);
+//        }
 
-        ListAdapter iduciLetoviAdapter = new CustomAdapterFlights(this, flights);
-        lvIduciLetovi.setAdapter(iduciLetoviAdapter);
+        IduciLetoviAdapter = new CustomAdapterFlights(this, flights);
+        lvIduciLetovi.setAdapter(IduciLetoviAdapter);
         lvIduciLetovi.setClickable(true);
 
         //Sta ce se desiti na klik itema sa liste
         lvIduciLetovi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Flight flight = flights[position];
+                Flight flight = flights.get(position);
             }
         });
 
@@ -206,7 +207,7 @@ public class MainActivity extends AppCompatActivity
         ImageView profileBox_ivProfilnaSlika = (ImageView) findViewById(R.id.profileBox_ivProfilnaSlika);
         TextView profileBox_tvImePrezime = (TextView) findViewById(R.id.profileBox_tvImePrezime);
         TextView profileBox_tvOstaleInformacije = (TextView) findViewById(R.id.profileBox_tvOstaleInformacije);
-        
+
         //Postavljanje onClickListenera za profile box
         RelativeLayout profileBoxHeader = (RelativeLayout) findViewById(R.id.navProfileBox);
         profileBoxHeader.setOnClickListener(new View.OnClickListener() {
@@ -218,8 +219,8 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-        
-        
+
+
 
 
         profileBox_tvImePrezime.setText(currentUser.getName() + " " + currentUser.getSurname());
@@ -353,6 +354,7 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         testiranje();
+
     }
 
     //Izbrisati kasnije
@@ -458,9 +460,25 @@ public class MainActivity extends AppCompatActivity
         ft.commit();
     }
 
-
     public void onPostakeButtonClick(View view) {
         startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
         drawer.closeDrawer(GravityCompat.START);
+    }
+
+    private ArrayList<Flight> getTopPonuda() {
+        ArrayList<Flight> flights = myDb.getAllFlights();
+
+
+        Calendar trenutnoVrijeme = Calendar.getInstance();
+
+            Iterator<Flight> i = flights.iterator();
+            while (i.hasNext()) {
+                Flight f = i.next();
+
+                if (trenutnoVrijeme.after(f.getDateTime())) {
+                    i.remove();
+                }
+            }
+        return flights;
     }
 }

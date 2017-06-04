@@ -12,6 +12,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -29,10 +30,10 @@ public class MenuBuducaPutovanja extends Fragment{
         lvBuducaPutovanjaa = (ListView) getView().findViewById(R.id.lvBuducaPutovanjaa);
 
         //Postavljanje custom adaptera za buduca putovanja
-        final Flight[] futureFlights = new Flight[20];
-        for (int i = 0; i < 20; i++) {
-            futureFlights[i] = new Flight(1, 2, "Beč", Calendar.getInstance(), 400, true);
-        }
+        final ArrayList<Flight> futureFlights = new ArrayList<>();
+//        for (int i = 0; i < 20; i++) {
+//            futureFlights[i] = new Flight(1, 2, "Beč", Calendar.getInstance(), 400, true);
+//        }
 
         ListAdapter iduciLetoviAdapter1 = new CustomAdapterFlights(getActivity().getApplicationContext(), futureFlights);
         lvBuducaPutovanjaa.setAdapter(iduciLetoviAdapter1);
@@ -42,7 +43,7 @@ public class MenuBuducaPutovanja extends Fragment{
         lvBuducaPutovanjaa.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Flight flight = futureFlights[position];
+                Flight flight = futureFlights.get(position);
             }
         });
 

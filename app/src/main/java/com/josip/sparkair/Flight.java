@@ -14,6 +14,7 @@ public class Flight {
     private Calendar dateTime;
     private double price;
     private boolean active;
+    private int brojRezervacija;
 
 
     public Flight(int flightID, int userID, String destination, Calendar dateTime, double price, boolean active) {
@@ -23,6 +24,18 @@ public class Flight {
         this.dateTime = dateTime;
         this.price = price;
         this.active = active;
+        this.brojRezervacija = 0;
+    }
+
+
+    public Flight(int flightID, int userID, String destination, Calendar dateTime, double price, boolean active, int brojRezervacija) {
+        this.flightID = flightID;
+        this.userID = userID;
+        this.destination = destination;
+        this.dateTime = dateTime;
+        this.price = price;
+        this.active = active;
+        this.brojRezervacija = brojRezervacija;
     }
 
 
@@ -33,6 +46,7 @@ public class Flight {
         this.dateTime = Calendar.getInstance();
         this.price = -1;
         this.active = false;
+        this.brojRezervacija = 0;
     }
 
     public int getFlightID() {
@@ -84,7 +98,13 @@ public class Flight {
         this.active = active;
     }
 
-    //Izbrisati kasnije
+    public int getBrojRezervacija() {
+        return brojRezervacija;
+    }
+
+    public void setBrojRezervacija(int brojRezervacija) {
+        this.brojRezervacija = brojRezervacija;
+    }
 
     public String getDateString() {
         dateTime.get(Calendar.WEEK_OF_YEAR);
