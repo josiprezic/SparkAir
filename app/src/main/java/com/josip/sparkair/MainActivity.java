@@ -26,6 +26,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -57,6 +58,8 @@ public class MainActivity extends AppCompatActivity
     public static final int ODJAVA = R.id.nav_odjava;
     public static final String TRENUTNI_TAB = "trenutniTab";
     private int currentFragment;
+    DrawerLayout drawer;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +76,12 @@ public class MainActivity extends AppCompatActivity
         tvBaza = (TextView) findViewById(R.id.tvBaza);
         //referenciranje navigation viewa
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         currentUser = Util.getCurrentUser(getApplicationContext());
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        //FloatingButtonZaDodavanjeLetova
+        fab = (FloatingActionButton) findViewById(R.id.fab);
 
         //Postavnjanje tabTostova
         //TabHost
@@ -113,7 +121,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         //Floating button za dodavanje novih letova
-         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
             public void onClick(View view) {
@@ -123,7 +131,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -172,7 +180,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -194,6 +202,18 @@ public class MainActivity extends AppCompatActivity
         ImageView profileBox_ivProfilnaSlika = (ImageView) findViewById(R.id.profileBox_ivProfilnaSlika);
         TextView profileBox_tvImePrezime = (TextView) findViewById(R.id.profileBox_tvImePrezime);
         TextView profileBox_tvOstaleInformacije = (TextView) findViewById(R.id.profileBox_tvOstaleInformacije);
+        
+        //Postavljanje onClickListenera za profile box
+        LinearLayout profileBoxHeader = (LinearLayout) findViewById(R.id.navProfileBox);
+        profileBoxHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(MainActivity.this, "Kliknuo si na profile box", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                drawer.closeDrawer(GravityCompat.START);
+
+            }
+        });
 
         profileBox_tvImePrezime.setText(currentUser.getName() + " " + currentUser.getSurname());
         if (currentUser.getType() == -1) {
@@ -258,13 +278,17 @@ public class MainActivity extends AppCompatActivity
     //Prikaz odabranog fragmenta
     private void displaySelectedScreen(int id) {
         Fragment fragment = null;
+        fab.setVisibility(View.GONE);
+
 
         switch (id) {
             case POCETNA:
                 currentFragment = POCETNA;
+                fab.setVisibility(View.VISIBLE);
                 break;
             case ODJAVA:
                 currentFragment = POCETNA;
+                fab.setVisibility(View.VISIBLE);
                 break;
             case BUDUCA_PUTOVANJA:
             fragment = new MenuBuducaPutovanja();
@@ -287,7 +311,7 @@ public class MainActivity extends AppCompatActivity
             ft.commit();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         drawer.closeDrawer(GravityCompat.START);
     }
 
