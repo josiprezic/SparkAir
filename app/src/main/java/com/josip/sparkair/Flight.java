@@ -27,6 +27,12 @@ public class Flight {
 
 
     public Flight() {
+        this.flightID = -1;
+        this.userID = -1;
+        this.destination = "(empty)";
+        this.dateTime = Calendar.getInstance();
+        this.price = -1;
+        this.active = false;
     }
 
     public int getFlightID() {

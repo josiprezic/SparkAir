@@ -3,6 +3,7 @@ package com.josip.sparkair.Util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.provider.ContactsContract;
+import android.widget.EditText;
 
 import com.josip.sparkair.DatabaseHelper;
 import com.josip.sparkair.MainActivity;
@@ -81,5 +82,9 @@ public class Util {
         editor.putInt("currentUserID", -1);
         editor.apply();
 
+    }
+
+    public static boolean isEmpty(EditText myEditText) {
+        return myEditText.getText().toString().trim().length() == 0;
     }
 }

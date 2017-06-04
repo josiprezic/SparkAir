@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.josip.sparkair.Util.Util;
+
 public class LoginActivity extends AppCompatActivity {
 
     public EditText etUsername;
@@ -52,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean login()
     {
-        if (isEmpty(etUsername) || isEmpty(etPassword)) {
+        if (Util.isEmpty(etUsername) || Util.isEmpty(etPassword)) {
             return false;
         }
 
@@ -82,9 +84,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isEmpty(EditText myEditText) {
-        return myEditText.getText().toString().trim().length() == 0;
-    }
+
 
     //Spremanje informacija o trenutnom useru u shared preferences
     public void saveInfo(User user) {

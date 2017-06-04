@@ -45,6 +45,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         etUsername.setText("");
                         etPassword.setText("");
                         Toast.makeText(getApplicationContext(), "Spremljeno u bazu!", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                     else
                     {

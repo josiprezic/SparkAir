@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.josip.sparkair.AddFlightActivity"
+    android:orientation="vertical"
+    >
+
+    <!--
+
+  public Flight(int flightID, int userID, String destination, Calendar dateTime, double price, boolean active)
+    -->
+
+    <EditText
+        android:id="@+id/addFlight_etDestinacija"
+        android:layout_marginTop="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Destinacija"
+        />
+
+    <EditText
+        android:id="@+id/addFlight_etCijena"
+        android:hint="Cijena"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        />
+
+    <Button
+        android:id="@+id/addFlight_btOdaberiDatum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="odaberi datum" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="odaberi vrijeme"
+        android:id="@+id/addFlight_btOdaberiVrijeme"
+        />
+
+    <CheckBox
+        android:id="@+id/addFlight_cbActive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aktivno"
+        android:checked="true"
+        />
+
+
+    <Button
+        android:id="@+id/addFlight_btSpremiLet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="spremi let"
+        />
+
+</LinearLayout>

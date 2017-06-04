@@ -47,12 +47,14 @@ public class MainActivity extends AppCompatActivity
     TextView tvBaza;
     Menu navDrawerMenu;
     NavigationView navigationView;
+    User currentUser;
 
     public static final String TRENUTNI_FRAGMENT = "trenutniFragment";
     public static final int POCETNA = R.id.navPocetna;
     public static final int BUDUCA_PUTOVANJA = R.id.navBuducaPutovanja;
     public static final int PROSLA_PUTOVANJA = R.id.navProšlaPutovanja;
     public static final int KONTAKT = R.id.navKontakt;
+    public static final int ODJAVA = R.id.nav_odjava;
     public static final String TRENUTNI_TAB = "trenutniTab";
     private int currentFragment;
 
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity
         tvBaza = (TextView) findViewById(R.id.tvBaza);
         //referenciranje navigation viewa
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-
+        currentUser = Util.getCurrentUser(getApplicationContext());
 
         //Postavnjanje tabTostova
         //TabHost
@@ -110,15 +112,14 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Dugme s postom na dnu ekrana + snackbar
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
+        //Floating button za dodavanje novih letova
+         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), AddFlightActivity.class ));
+            }
+        });
 
 
 
@@ -185,15 +186,17 @@ public class MainActivity extends AppCompatActivity
 
         //Provjera da li je user logovan i ako jest prikazati opciju logOut
         //Ako nije logovan prikazati opciju login
-        User user = Util.getCurrentUser(getApplicationContext());
+       // User user = Util.getCurrentUser(getApplicationContext()); --previse pozivanja
+
+
         Menu nav_Menu = navigationView.getMenu(); //dravable menu
         //Profile box - referenciranje objekata
         ImageView profileBox_ivProfilnaSlika = (ImageView) findViewById(R.id.profileBox_ivProfilnaSlika);
         TextView profileBox_tvImePrezime = (TextView) findViewById(R.id.profileBox_tvImePrezime);
         TextView profileBox_tvOstaleInformacije = (TextView) findViewById(R.id.profileBox_tvOstaleInformacije);
 
-        profileBox_tvImePrezime.setText(user.getName() + " " + user.getSurname());
-        if (user.getType() == -1) {
+        profileBox_tvImePrezime.setText(currentUser.getName() + " " + currentUser.getSurname());
+        if (currentUser.getType() == -1) {
             //trenutni user je gost, prikazati samo login opciju
             menu.findItem(R.id.actionLogOut).setVisible(false);
             menu.findItem(R.id.actionSignIn).setVisible(true);
@@ -213,11 +216,10 @@ public class MainActivity extends AppCompatActivity
         }
 
         //Dodatne stvari za ADMIN account
-        if (user.getType() == 2) {
+        if (currentUser.getType() == 2) {
             //Mijenjanje informacija u profile boxu
             profileBox_tvOstaleInformacije.setText("ADMIN");
         }
-
 
         invalidateOptionsMenu();
         return super.onPrepareOptionsMenu(menu);
@@ -238,7 +240,7 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+
         if (id == R.id.actionSignIn) {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
@@ -261,18 +263,21 @@ public class MainActivity extends AppCompatActivity
             case POCETNA:
                 currentFragment = POCETNA;
                 break;
+            case ODJAVA:
+                currentFragment = POCETNA;
+                break;
             case BUDUCA_PUTOVANJA:
-                fragment = new MenuBuducaPutovanja();
-                currentFragment = BUDUCA_PUTOVANJA;
-                break;
+            fragment = new MenuBuducaPutovanja();
+            currentFragment = BUDUCA_PUTOVANJA;
+            break;
             case PROSLA_PUTOVANJA:
-                fragment = new MenuProslaPutovanja();
-                currentFragment = PROSLA_PUTOVANJA;
-                break;
+            fragment = new MenuProslaPutovanja();
+            currentFragment = PROSLA_PUTOVANJA;
+            break;
             case KONTAKT:
-                fragment = new MenuKontakt();
-                currentFragment = KONTAKT;
-                break;
+            fragment = new MenuKontakt();
+            currentFragment = KONTAKT;
+            break;
         }
 
         if (fragment != null) {
@@ -295,7 +300,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_odjava) {
             Util.odjaviSe(getApplicationContext());
-            id = R.id.navPocetna;
+            Toast.makeText(this, "Odjavili ste se", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
         if (id == R.id.navPocetna) {
             tabHost.setVisibility(View.VISIBLE);
@@ -337,7 +343,7 @@ public class MainActivity extends AppCompatActivity
          }
 
         //Testiranje flightova
-        myDb.insertFlight(2, "Barcelona", Calendar.getInstance(), 200, true);
+//        myDb.insertFlight(2, "Barcelona", Calendar.getInstance(), 200, true);
         ArrayList<Flight> flights = myDb.getAllFlights();
         tvBaza.setText(tvBaza.getText().toString() + "\n" + "Letovi:\n");
         for (int i = 0; i < flights.size(); i++) {
