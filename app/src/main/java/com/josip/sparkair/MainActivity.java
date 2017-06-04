@@ -23,6 +23,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -35,10 +37,12 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.josip.sparkair.Util.FlightComparator;
 import com.josip.sparkair.Util.Util;
-
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -147,11 +151,7 @@ public class MainActivity extends AppCompatActivity
 
         //Trazi i prikazuje top ponuda letove
         final ArrayList<Flight> topFlights = getTopPonuda();
-//        for (int i = 0; i < 20; i++) {
-//            topFlights[i] = new Flight(1, 2, "Pariz", Calendar.getInstance(), 400, true);
-//        }
-
-        TopPonudaLetoviAdapter = new CustomAdapterFlights(this, topFlights);
+        TopPonudaLetoviAdapter = new CustomAdapterFlights(this, getTopPonuda());
         lvTopPonudaLetovi.setAdapter(TopPonudaLetoviAdapter);
         lvTopPonudaLetovi.setClickable(true);
 
@@ -165,11 +165,7 @@ public class MainActivity extends AppCompatActivity
 
         //Postavljanje custom adaptera za iduce letove
         final ArrayList<Flight> flights = getTopPonuda();
-//        for (int i = 0; i < 20; i++) {
-//            flights[i] = new Flight(1, 2, "Barcelona", Calendar.getInstance(), 200, true);
-//        }
-
-        IduciLetoviAdapter = new CustomAdapterFlights(this, flights);
+        IduciLetoviAdapter = new CustomAdapterFlights(this, getIduciLetovi());
         lvIduciLetovi.setAdapter(IduciLetoviAdapter);
         lvIduciLetovi.setClickable(true);
 
@@ -321,8 +317,6 @@ public class MainActivity extends AppCompatActivity
             ft.replace(R.id.content_main, fragment);
             ft.commit();
         }
-
-
         drawer.closeDrawer(GravityCompat.START);
     }
 
@@ -355,6 +349,13 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         testiranje();
 
+        //Refresh liste Top Ponuda
+       TopPonudaLetoviAdapter = new CustomAdapterFlights(this, getTopPonuda());
+        lvTopPonudaLetovi.setAdapter(TopPonudaLetoviAdapter);
+
+        //Refresh liste IduciLetovi
+        IduciLetoviAdapter = new CustomAdapterFlights(this, getIduciLetovi());
+        lvIduciLetovi.setAdapter(IduciLetoviAdapter);
     }
 
     //Izbrisati kasnije
@@ -468,17 +469,37 @@ public class MainActivity extends AppCompatActivity
     private ArrayList<Flight> getTopPonuda() {
         ArrayList<Flight> flights = myDb.getAllFlights();
 
-
         Calendar trenutnoVrijeme = Calendar.getInstance();
 
-            Iterator<Flight> i = flights.iterator();
-            while (i.hasNext()) {
-                Flight f = i.next();
+        Iterator<Flight> i = flights.iterator();
+        while (i.hasNext()) {
+            Flight f = i.next();
 
-                if (trenutnoVrijeme.after(f.getDateTime())) {
-                    i.remove();
-                }
+            if (trenutnoVrijeme.after(f.getDateTime())) {
+                i.remove();
             }
+        }
+
+        //Sortiranje
+        Collections.sort(flights, FlightComparator.ComparatorFlightRezervacije());
+        ArrayList<Flight> rezultat = new ArrayList<>(flights.subList(0,10));
+        return rezultat;
+    }
+
+    private ArrayList<Flight> getIduciLetovi() {
+        ArrayList<Flight> flights = myDb.getAllFlights();
+        Calendar trenutnoVrijeme = Calendar.getInstance();
+
+        Iterator<Flight> i = flights.iterator();
+        while (i.hasNext()) {
+            Flight f = i.next();
+            if (trenutnoVrijeme.after(f.getDateTime())) {
+                i.remove();
+            }
+        }
+
+        //Sortiranje
+        Collections.sort(flights, FlightComparator.ComparatorFlightDatum());
         return flights;
     }
 }

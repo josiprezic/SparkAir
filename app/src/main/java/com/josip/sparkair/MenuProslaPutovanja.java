@@ -24,15 +24,13 @@ public class MenuProslaPutovanja extends Fragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //Copy pocetak
-
         lvProslaPutovanjaa = (ListView) getView().findViewById(R.id.lvProslaPutovanjaa);
 
         //Postavljanje custom adaptera za prosla putovanja
         final ArrayList<Flight> pastFlights = new ArrayList<>();
-//        for (int i = 0; i < 20; i++) {
-//            pastFlights[i] = new Flight(1, 2, "Prag", Calendar.getInstance(), 400, true);
-//        }
+        for (int i = 0; i < 20; i++) {
+            pastFlights.add(new Flight(1, 2, "Prag", Calendar.getInstance(), 400, true));
+        }
 
         ListAdapter iduciLetoviAdapter1 = new CustomAdapterFlights(getActivity().getApplicationContext(), pastFlights);
         lvProslaPutovanjaa.setAdapter(iduciLetoviAdapter1);
@@ -45,8 +43,6 @@ public class MenuProslaPutovanja extends Fragment{
                 Flight flight = pastFlights.get(position);
             }
         });
-
-        //Copy kraj
 
     }
 

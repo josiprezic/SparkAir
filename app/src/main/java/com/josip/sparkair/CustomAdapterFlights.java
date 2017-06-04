@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * Created by Josip on 30.5.2017..
  */
 
-class CustomAdapterFlights extends ArrayAdapter<Flight> {
+ class CustomAdapterFlights extends ArrayAdapter<Flight> {
 
     public CustomAdapterFlights(Context context, ArrayList<Flight> flights) {
         super(context,R.layout.custom_row_flights, flights);
@@ -65,5 +65,5 @@ class CustomAdapterFlights extends ArrayAdapter<Flight> {
         return customView;
     }
 
-
+    public void funkcija() {}
 }

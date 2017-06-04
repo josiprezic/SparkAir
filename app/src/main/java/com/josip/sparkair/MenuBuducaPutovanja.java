@@ -31,9 +31,9 @@ public class MenuBuducaPutovanja extends Fragment{
 
         //Postavljanje custom adaptera za buduca putovanja
         final ArrayList<Flight> futureFlights = new ArrayList<>();
-//        for (int i = 0; i < 20; i++) {
-//            futureFlights[i] = new Flight(1, 2, "Beč", Calendar.getInstance(), 400, true);
-//        }
+        for (int i = 0; i < 20; i++) {
+            futureFlights.add(new Flight(1, 2, "Beč", Calendar.getInstance(), 400, true));
+        }
 
         ListAdapter iduciLetoviAdapter1 = new CustomAdapterFlights(getActivity().getApplicationContext(), futureFlights);
         lvBuducaPutovanjaa.setAdapter(iduciLetoviAdapter1);

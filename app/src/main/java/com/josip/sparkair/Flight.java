@@ -1,13 +1,16 @@
 package com.josip.sparkair;
 
+import android.support.annotation.NonNull;
+
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Locale;
 
 /**
  * Created by Josip on 28.5.2017..
  */
 
-public class Flight {
+public class Flight{
     private int flightID;
     private int userID;
     private String destination;
