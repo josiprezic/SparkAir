@@ -161,7 +161,10 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
             while(c.moveToNext()) {
                 list.add(new User(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5), c.getInt(6) == 1, c.getInt(7)));
             }
+
+            c.close();
         }
+        db.close();
         return list;
     }
 
@@ -175,8 +178,13 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
             c.moveToNext();
             //User w  = new User(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getInt(5), c.getInt(6) == 1, c.getInt(7));
             User u = new User(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5), c.getInt(6) == 1, c.getInt(7));
+
+            c.close();
+            db.close();
+
             return  u;
         }
+        db.close();
         return new User();
     }
 
@@ -190,8 +198,13 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
             c.moveToNext();
             //User w  = new User(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getInt(5), c.getInt(6) == 1, c.getInt(7));
             User u = new User(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5), c.getInt(6) == 1, c.getInt(7));
+
+            c.close();
+            db.close();
+
             return  u;
         }
+        db.close();
         return new User();
     }
 
@@ -227,7 +240,11 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
             while(c.moveToNext()) {
                 list.add(new Flight(c.getInt(0), c.getInt(1), c.getString(2), Util.StringToCalendar(c.getString(3)), c.getFloat(4), c.getInt(5) == 1));
             }
+
+            c.close();
+
         }
+        db.close();
         return list;
     }
 
@@ -260,7 +277,10 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
             while(c.moveToNext()) {
                 list.add(new Note(c.getInt(0), c.getInt(1), c.getString(2)));
             }
+
+            c.close();
         }
+        db.close();
         return list;
     }
 
@@ -295,7 +315,10 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
             while (c.moveToNext()) {
                 list.add(new Reservation(c.getInt(0), c.getInt(1), Util.StringToCalendar(c.getString(2)), c.getInt(3) == 1));
             }
+
+            c.close();
         }
+        db.close();
         return list;
     }
 
@@ -329,7 +352,10 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
             while (c.moveToNext()) {
                 list.add(new MyLog(c.getInt(0), c.getInt(1), c.getString(2), Util.StringToCalendar(c.getString(3))));
             }
+
+            c.close();
         }
+        db.close();
         return  list;
     }
 
