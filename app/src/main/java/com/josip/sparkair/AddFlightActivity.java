@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.josip.sparkair.Util.Util;
@@ -22,6 +23,8 @@ public class AddFlightActivity extends AppCompatActivity {
     Button addFlight_btOdaberiVrijeme;
     CheckBox addFlight_cbActive;
     Button addFlight_btSpremiLet;
+    TextView addFlight_etDatum;
+    TextView addFlight_etVrijeme;
     boolean izabranoVrijeme;
     boolean izaabranDatum;
     public int minuta, sat, dan, mjesec, godina;
@@ -38,6 +41,8 @@ public class AddFlightActivity extends AppCompatActivity {
         addFlight_btOdaberiVrijeme = (Button) findViewById(R.id.addFlight_btOdaberiVrijeme);
         addFlight_cbActive = (CheckBox) findViewById(R.id.addFlight_cbActive);
         addFlight_btSpremiLet = (Button) findViewById(R.id.addFlight_btSpremiLet);
+        addFlight_etDatum = (TextView) findViewById(R.id.addFlight_tvDatum);
+        addFlight_etVrijeme = (TextView) findViewById(R.id.addFlight_tvVriijeme);
         izaabranDatum = false;
         izabranoVrijeme = false;
 

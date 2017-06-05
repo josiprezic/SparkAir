@@ -31,9 +31,13 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         // Do something with the time chosen by the user
-        ((AddFlightActivity) getActivity()).izabranoVrijeme = true;
-        ((AddFlightActivity) getActivity()).sat = hourOfDay;
-        ((AddFlightActivity) getActivity()).minuta = minute;
+        AddFlightActivity a = (AddFlightActivity) getActivity();
+        a.izabranoVrijeme = true;
+        a.sat = hourOfDay;
+        a.minuta = minute;
+
         //Toast.makeText(getActivity().getApplicationContext(), Integer.toString(hourOfDay) + " sati", Toast.LENGTH_SHORT).show();
+        a.addFlight_etVrijeme.setText(Integer.toString(hourOfDay) + ":" + Integer.toString(minute));
+
     }
 }

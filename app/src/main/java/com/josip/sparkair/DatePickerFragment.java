@@ -1,11 +1,13 @@
 package com.josip.sparkair;
 
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 //import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ import java.util.Calendar;
  */
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         //postavljanje trenutnog datuma
@@ -31,10 +34,15 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        Toast.makeText(getActivity().getApplicationContext(), Integer.toString(dayOfMonth) + "." + Integer.toString(month) + "." + Integer.toString(year) , Toast.LENGTH_SHORT).show();
-        ((AddFlightActivity) getActivity()).izaabranDatum = true;
-        ((AddFlightActivity) getActivity()).dan = dayOfMonth;
-        ((AddFlightActivity) getActivity()).mjesec = month;
-        ((AddFlightActivity) getActivity()).godina = year;
+
+        //spremanje datuma u varijable AddFlightActivity-ja
+
+        AddFlightActivity a =  (AddFlightActivity) getActivity();
+        a.izaabranDatum = true;
+        a.dan = dayOfMonth;
+        a.mjesec = month;
+        a.godina = year;
+
+        a.addFlight_etDatum.setText(Integer.toString(dayOfMonth) + "." +Integer.toString(month + 1) + "." +Integer.toString(year) + ".");
     }
 }
