@@ -52,7 +52,7 @@ import java.util.ArrayList;
         tvOdrediste.setText(singleFlightItem.getDestination());
         tvDatum.setText(singleFlightItem.getDateString());
         tvVrijeme.setText(singleFlightItem.getTimeString());
-        tvCijena.setText(Double.toString(singleFlightItem.getPrice()) + "KM");
+        tvCijena.setText(String.format("%.2f", singleFlightItem.getPrice()) + " KM");
         tvBrojRezervacija.setText(Integer.toString(singleFlightItem.getBrojRezervacija()));
 
         //Iz nekog razloga su sva slova postala bijela pa ih mijenjam u crna

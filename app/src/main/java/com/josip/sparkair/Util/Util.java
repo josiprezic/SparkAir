@@ -11,6 +11,7 @@ import com.josip.sparkair.User;
 
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Random;
 
 /**
  * Created by Josip on 29.5.2017..
@@ -50,23 +51,6 @@ public class Util {
         return rezultat;
     }
 
-
-    //   public static User getCurrentUser(Context context) {
-//        //Provjera da li je user u shared preferences
-//        SharedPreferences settings = context.getSharedPreferences("UserInfo", 0);
-//        String username = settings.getString("username", "guest");
-//        String password = settings.getString("password", "guest");
-//
-//        if(username.equals("guest")) {
-//            return new User(-1, "guest", "guest", "Guest", "Guest", "slika", true, -1);
-//        }
-//
-//        DatabaseHelper myDb = new DatabaseHelper(context);
-//        return myDb.getUserInfo(username, password);
-//
-//
-//    }
-
     //Dobavljanje trenutnog usera -- nova verzija
     public static User getCurrentUser(Context context) {
         SharedPreferences settings = context.getSharedPreferences("UserInfo", 0);
@@ -86,5 +70,19 @@ public class Util {
 
     public static boolean isEmpty(EditText myEditText) {
         return myEditText.getText().toString().trim().length() == 0;
+    }
+
+
+    //random string generator
+    public static String getRandomString() {
+        Random generator = new Random();
+        StringBuilder randomStringBuilder = new StringBuilder();
+        int randomLength = generator.nextInt(10);
+        char tempChar;
+        for (int i = 0; i < randomLength; i++){
+            tempChar = (char) (generator.nextInt(96) + 32);
+            randomStringBuilder.append(tempChar);
+        }
+        return randomStringBuilder.toString();
     }
 }

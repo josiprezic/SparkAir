@@ -363,7 +363,7 @@ public class MainActivity extends AppCompatActivity
 
         //Provjera koji je user logovan
         User currentUser = Util.getCurrentUser(getApplicationContext());
-        Toast.makeText(this, "Current user:" + Integer.toString(currentUser.getUserID()), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "Current user:" + Integer.toString(currentUser.getUserID()), Toast.LENGTH_SHORT).show();
         tvBaza.setText("Current user: " +  Integer.toString(currentUser.getUserID()) + ", " + currentUser.getUsername() + ", " + currentUser.getPassword() + "\n");
 
         //TESTIRANJE FUNKCIJE getallusers sa listom
@@ -380,7 +380,20 @@ public class MainActivity extends AppCompatActivity
          }
 
         //Testiranje flightova
-//        myDb.insertFlight(2, "Barcelona", Calendar.getInstance(), 200, true);
+//
+        Calendar buducnost = Calendar.getInstance();
+        buducnost.add(Calendar.DAY_OF_MONTH, 1);
+
+        Calendar zaGodinuiDana = Calendar.getInstance();
+        buducnost.add(Calendar.YEAR, 1);
+
+        Calendar proslost = Calendar.getInstance();
+        proslost.add(Calendar.DAY_OF_MONTH, -1);
+
+        myDb.insertFlight(1, Util.getRandomString(), buducnost, 134.4 , true );
+        myDb.insertFlight(1, Util.getRandomString(), proslost, 124.4 , true );
+        myDb.insertFlight(1, Util.getRandomString(), zaGodinuiDana, 114.4 , true );
+
         ArrayList<Flight> flights = myDb.getAllFlights();
         tvBaza.setText(tvBaza.getText().toString() + "\n" + "Letovi:\n");
         for (int i = 0; i < flights.size(); i++) {
@@ -402,6 +415,8 @@ public class MainActivity extends AppCompatActivity
         for (int i = 0; i < reservations.size(); i++) {
             tvBaza.setText(tvBaza.getText().toString() + "\n" + Integer.toString(reservations.get(i).getUserID()) + ", " + Integer.toString(reservations.get(i).getFlightID()) + "," + Util.CalendarToString(reservations.get(i).getDate()) + " ," + String.valueOf(reservations.get(i).isActive()));
         }
+
+
 
         //Testiranje logova
       boolean uspjesno =  myDb.insertLog(1, "User je rezervirao putovanje u Barcelonu", Calendar.getInstance());
@@ -465,8 +480,7 @@ public class MainActivity extends AppCompatActivity
         startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
         drawer.closeDrawer(GravityCompat.START);
     }
-
-    private ArrayList<Flight> getTopPonuda() {
+    public ArrayList<Flight> getTopPonuda() {
         ArrayList<Flight> flights = myDb.getAllFlights();
 
         Calendar trenutnoVrijeme = Calendar.getInstance();
@@ -495,17 +509,24 @@ public class MainActivity extends AppCompatActivity
     private ArrayList<Flight> getIduciLetovi() {
         ArrayList<Flight> flights = myDb.getAllFlights();
         Calendar trenutnoVrijeme = Calendar.getInstance();
+        Calendar zaSestMjeseci = Calendar.getInstance();
+        zaSestMjeseci.add(Calendar.MONTH, 6);
 
         Iterator<Flight> i = flights.iterator();
         while (i.hasNext()) {
             Flight f = i.next();
-            if (trenutnoVrijeme.after(f.getDateTime())) {
+
+            //Ako je prosao ili ako nije u iducih sest mjeseci
+            if (trenutnoVrijeme.after(f.getDateTime()) || zaSestMjeseci.before(f.getDateTime())) {
                 i.remove();
             }
+
+            //
         }
 
         //Sortiranje
         Collections.sort(flights, FlightComparator.ComparatorFlightDatum());
         return flights;
     }
+
 }

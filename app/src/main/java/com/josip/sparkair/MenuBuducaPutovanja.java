@@ -12,8 +12,12 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.josip.sparkair.Util.FlightComparator;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * Created by Josip on 31.5.2017..
@@ -30,10 +34,7 @@ public class MenuBuducaPutovanja extends Fragment{
         lvBuducaPutovanjaa = (ListView) getView().findViewById(R.id.lvBuducaPutovanjaa);
 
         //Postavljanje custom adaptera za buduca putovanja
-        final ArrayList<Flight> futureFlights = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            futureFlights.add(new Flight(1, 2, "Beč", Calendar.getInstance(), 400, true));
-        }
+        final ArrayList<Flight> futureFlights = getBuducaPutovanja();
 
         ListAdapter iduciLetoviAdapter1 = new CustomAdapterFlights(getActivity().getApplicationContext(), futureFlights);
         lvBuducaPutovanjaa.setAdapter(iduciLetoviAdapter1);
@@ -53,5 +54,28 @@ public class MenuBuducaPutovanja extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.menu_buduca_putovanja, container, false);
+    }
+
+
+    private ArrayList<Flight> getBuducaPutovanja() {
+        DatabaseHelper myDb = new DatabaseHelper(getActivity().getApplicationContext());
+        ArrayList<Flight> flights = myDb.getAllFlights();
+        Calendar trenutnoVrijeme = Calendar.getInstance();
+        Calendar zaSestMjeseci = Calendar.getInstance();
+        zaSestMjeseci.add(Calendar.MONTH, 6);
+
+        Iterator<Flight> i = flights.iterator();
+        while (i.hasNext()) {
+            Flight f = i.next();
+
+            //Ako je prosao ili ako nije u iducih sest mjeseci
+            if (trenutnoVrijeme.after(f.getDateTime()) || zaSestMjeseci.before(f.getDateTime())) {
+                i.remove();
+            }
+        }
+
+        //Sortiranje
+        Collections.sort(flights, FlightComparator.ComparatorFlightDatum());
+        return flights;
     }
 }
