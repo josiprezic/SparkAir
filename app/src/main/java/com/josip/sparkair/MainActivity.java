@@ -482,7 +482,13 @@ public class MainActivity extends AppCompatActivity
 
         //Sortiranje
         Collections.sort(flights, FlightComparator.ComparatorFlightRezervacije());
-        ArrayList<Flight> rezultat = new ArrayList<>(flights.subList(0,10));
+
+        int velicina = flights.size();
+
+        if (velicina > 10)
+            velicina = 10;
+
+        ArrayList<Flight> rezultat = new ArrayList<>(flights.subList(0,velicina));
         return rezultat;
     }
 
