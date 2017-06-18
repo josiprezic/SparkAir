@@ -3,6 +3,7 @@ package com.josip.sparkair;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Build;
 import android.support.v4.app.Fragment;
@@ -506,28 +507,37 @@ public class MainActivity extends AppCompatActivity
 
                 if(currentUser.getType() != -1) {
 
-                    AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-                    alertDialog.setTitle("Potvrda");
-                    alertDialog.setMessage("Sigurni ste da zelite rezervirati ovaj let?");
-                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "DA",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(getBaseContext(), "Uspijesno ste rezervirali let", Toast.LENGTH_SHORT).show();
-                                    dialog.dismiss();
+                    //Kmh ne radi? uvijek preskoči
+                    //Da pokušamo sa setTag i getTag
+                    if (iduci_ibRezervacija.getDrawable() == getDrawable(R.drawable.ic_playlist_add_check_black_48dp)){
 
+                        iduci_ibRezervacija.setImageResource(R.drawable.ic_playlist_add_black_48dp);
+                        Toast.makeText(getBaseContext(), "Registracija je otkazana", Toast.LENGTH_SHORT).show();
+                    } else {
 
-                                    iduci_ibRezervacija.setBackgroundColor(Color.RED);
-                                }
-                            });
-                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NE",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog.show();
-                } else {
-                    Toast.makeText(getBaseContext(), "Niste registrirani", Toast.LENGTH_SHORT).show();
+                        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                        alertDialog.setTitle("Potvrda");
+                        alertDialog.setMessage("Sigurni ste da zelite rezervirati ovaj let?");
+                        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "DA",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Toast.makeText(getBaseContext(), "Uspijesno ste rezervirali let", Toast.LENGTH_SHORT).show();
+                                        iduci_ibRezervacija.setImageResource(R.drawable.ic_playlist_add_check_black_48dp);
+                                        iduci_ibRezervacija.setBackgroundColor(Color.RED);
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NE",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog.show();
+                    }
+                }
+                else {
+                    Toast.makeText(getBaseContext(), "Prvo se registrirajte", Toast.LENGTH_SHORT).show();
                 }
         }
         });
