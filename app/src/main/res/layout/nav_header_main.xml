@@ -18,13 +18,13 @@
 
     <ImageView
         android:id="@+id/profileBox_ivProfilnaSlika"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="15dp"
-        app:srcCompat="@android:drawable/sym_def_app_icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="40dp"
+        app:srcCompat="@drawable/ic_face_black_48dp" />
 
     <TextView
         android:id="@+id/profileBox_tvImePrezime"
@@ -50,11 +50,11 @@
         android:id="@+id/profileBox_btPostavke"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="40dp"
         android:layout_marginRight="20dp"
-        android:layout_alignParentEnd="true"
+        android:background="@drawable/ic_settings_black_48dp"
         android:onClick="onPostakeButtonClick"
-        />
+        android:layout_alignTop="@+id/profileBox_ivProfilnaSlika"
+        android:layout_alignParentEnd="true" />
 
 
 

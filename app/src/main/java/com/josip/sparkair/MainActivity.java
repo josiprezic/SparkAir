@@ -419,7 +419,7 @@ public class MainActivity extends AppCompatActivity
 
 
         //Testiranje logova
-      boolean uspjesno =  myDb.insertLog(1, "User je rezervirao putovanje u Barcelonu", Calendar.getInstance());
+      boolean uspjesno =  myDb.insertLog(1, "User je uspjesno rezervirao putovanje", Calendar.getInstance());
        ArrayList<MyLog> logs = myDb.getAllLogs();
         tvBaza.setText(tvBaza.getText().toString() + "\n" + "\nLogovi(" + Integer.toString(logs.size()) + "):\n");
         for (int i = 0; i < logs.size(); i++) {

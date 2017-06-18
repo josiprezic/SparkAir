@@ -3,14 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.josip.sparkair.SettingsActivity">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="postavke"
-        android:gravity="center"
-        />
+    tools:context="com.josip.sparkair.SettingsActivity"
+    android:layout_height="match_parent">
 
 </android.support.constraint.ConstraintLayout>

@@ -43,7 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/tabTest"
-                    android:background="#ffc916"
+                    android:background="#fc5703"
                     android:orientation="vertical">
 
                     <ScrollView
@@ -82,7 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/tabTopPonuda"
-                    android:background="#ffc916"
+                    android:background="#fc5703"
                     android:orientation="vertical">
 
                     <ListView

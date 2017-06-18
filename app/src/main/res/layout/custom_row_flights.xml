@@ -70,7 +70,8 @@
                 android:cropToPadding="false"
                 android:elevation="3dp"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/note_icon" />
+                android:tint="@color/colorPrimary"
+                app:srcCompat="@drawable/ic_note_add_black_48dp" />
 
             <ImageButton
                 android:id="@+id/iduci_ibRezervacija"
@@ -81,7 +82,8 @@
                 android:cropToPadding="false"
                 android:elevation="3dp"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/note_reserve" />
+                android:tint="@color/colorPrimary"
+                app:srcCompat="@drawable/ic_playlist_add_black_48dp" />
 
         </LinearLayout>
 
