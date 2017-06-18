@@ -22,7 +22,7 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
 
     //Names of database, versions, tables and columns
     private static final String DATABASE_NAME = "SparkAir.db";
-    private static final int VERSION = 2;
+    private static final int VERSION = 3;
 
     //TABLE USERS
     public static final String USERS_TABLE = "users";
@@ -83,7 +83,8 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
                 USER_SURNAME + " TEXT," +
                 USER_IMAGE + " TEXT," +
                 USER_ACTIVE + " INTEGER," +
-                USER_TYPE + " INTEGER)");
+                USER_TYPE + " INTEGER," +
+                " CONSTRAINT UQ_Username UNIQUE (" + USER_USERNAME +"))");
 
         //Creating table flights
         db.execSQL("CREATE TABLE " + FLIGHTS_TABLE + " ( " +

@@ -119,10 +119,10 @@ public class MainActivity extends AppCompatActivity
         tabHost.addTab(spec);
 
         //Tab Test
-        spec = tabHost.newTabSpec("Tab Three");
+      spec = tabHost.newTabSpec("Tab Three");
         spec.setContent(R.id.tabTest);
         spec.setIndicator("Test");
-        tabHost.addTab(spec);
+       tabHost.addTab(spec);
 
         //Dohvaćanje spremljenih podataka nakon rotacije screena
         // i postavljanje trenutno otvorenog fragmenta i ukljucivanje i iskljucivanje tabhosta
@@ -368,6 +368,9 @@ public class MainActivity extends AppCompatActivity
 
     //Izbrisati kasnije
     public void testiranje() {
+
+        //Dodavanje admina
+        myDb.insertUser("Administrator", "", "admin", "admin", 2);
 
         //Provjera koji je user logovan
         User currentUser = Util.getCurrentUser(getApplicationContext());
