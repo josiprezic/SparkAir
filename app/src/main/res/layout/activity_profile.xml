@@ -23,7 +23,7 @@
         app:layout_constraintHorizontal_bias="0.033" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_profileCurrentUserNameID"
         android:layout_width="192dp"
         android:layout_height="44dp"
         android:layout_below="@+id/profileBox_ivProfilnaSlika"
@@ -43,7 +43,7 @@
         app:layout_constraintHorizontal_bias="0.366" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tv_profileCurrentUserType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profileBox_tvImePrezime"
@@ -54,8 +54,8 @@
         android:text="Guest account"
         android:textAlignment="viewStart"
         android:textSize="18sp"
+        app:layout_constraintHorizontal_bias="0.12"
         app:layout_constraintLeft_toRightOf="@+id/imageView"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintHorizontal_bias="0.12" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_profileCurrentUserNameID" />
 </android.support.constraint.ConstraintLayout>

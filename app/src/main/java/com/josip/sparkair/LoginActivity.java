@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         else
         {
             //uspjesno loginran korisnik
-            Toast.makeText(getApplicationContext(), Integer.toString(user.getUserID()) + "," + user.getName() + "," + user.getSurname(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Pozdrav " + Integer.toString(user.getUserID()) + "," + user.getName() + "," + user.getSurname() + "Type: " + user.getType(), Toast.LENGTH_SHORT).show();
             etUsername.setText("");
             etPassword.setText("");
 

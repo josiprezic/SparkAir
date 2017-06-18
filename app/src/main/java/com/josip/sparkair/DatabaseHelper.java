@@ -18,6 +18,8 @@ import java.util.Calendar;
 
 public class DatabaseHelper  extends SQLiteOpenHelper {
 
+
+
     //Names of database, versions, tables and columns
     private static final String DATABASE_NAME = "SparkAir.db";
     private static final int VERSION = 2;
@@ -149,6 +151,28 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
             return true;
         }
     }
+
+    //Insert novih admina
+    public boolean insertUser(String name, String surname, String username, String password, int type){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(USER_USERNAME, username);
+        contentValues.put(USER_PASSWORD, password);
+        contentValues.put(USER_TYPE, type);
+        contentValues.put(USER_NAME, name);
+        contentValues.put(USER_SURNAME, surname);
+        contentValues.put(USER_ACTIVE, 1);
+        contentValues.put(USER_IMAGE, "slika");
+        long result = db.insert(USERS_TABLE, null, contentValues);
+        db.close();
+        if(result == -1){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
     //Funkcija vraca listu sa svim userima i svim njihovim informacijama
     public ArrayList<User> getAllusers() {

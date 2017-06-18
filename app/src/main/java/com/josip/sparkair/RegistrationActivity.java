@@ -36,7 +36,17 @@ public class RegistrationActivity extends AppCompatActivity {
                     //spremi u bazu
                     DatabaseHelper myDb;
                     myDb = new DatabaseHelper(getApplicationContext());
-                    boolean isInserted = myDb.insertUser(etName.getText().toString(),etSurname.getText().toString(), etUsername.getText().toString(), etPassword.getText().toString());
+
+                    boolean isInserted = false; // = myDb.insertUser(etName.getText().toString(),etSurname.getText().toString(), etUsername.getText().toString(), etPassword.getText().toString());
+
+
+                    //Ukoliko je username = "admin" i password 1234 usera insertamo kao admina
+                    if(etPassword.getText().toString() == "1234" && etUsername.getText().toString() == "admin"){
+                        isInserted = myDb.insertUser(etName.getText().toString(),etSurname.getText().toString(), etUsername.getText().toString(), etPassword.getText().toString(), 2);
+                    } else {
+                        isInserted = myDb.insertUser(etName.getText().toString(),etSurname.getText().toString(), etUsername.getText().toString(), etPassword.getText().toString(), 1);
+                    }
+
 
                     if(isInserted == true)
                     {

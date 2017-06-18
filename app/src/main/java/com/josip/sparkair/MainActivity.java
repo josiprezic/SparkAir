@@ -74,6 +74,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //myDb.insertUser("AdminName", "AdminSurname", "admin", "admin", 2 );
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -94,6 +97,9 @@ public class MainActivity extends AppCompatActivity
 
         //FloatingButtonZaDodavanjeLetova
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        if(currentUser.getType() != 2){
+            fab.setVisibility(View.INVISIBLE);
+        }
 
         //Postavljanje Tabova
         //TabHost
@@ -285,8 +291,9 @@ public class MainActivity extends AppCompatActivity
     //Prikaz odabranog fragmenta
     private void displaySelectedScreen(int id) {
         Fragment fragment = null;
-        fab.setVisibility(View.GONE);
-
+        if(currentUser.getType() != 2) {
+            fab.setVisibility(View.GONE);
+        } else {fab.setVisibility(View.VISIBLE);}
 
         switch (id) {
             case POCETNA:
@@ -295,6 +302,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case ODJAVA:
                 currentFragment = POCETNA;
+
                 fab.setVisibility(View.VISIBLE);
                 break;
             case BUDUCA_PUTOVANJA:
@@ -364,7 +372,7 @@ public class MainActivity extends AppCompatActivity
         //Provjera koji je user logovan
         User currentUser = Util.getCurrentUser(getApplicationContext());
        // Toast.makeText(this, "Current user:" + Integer.toString(currentUser.getUserID()), Toast.LENGTH_SHORT).show();
-        tvBaza.setText("Current user: " +  Integer.toString(currentUser.getUserID()) + ", " + currentUser.getUsername() + ", " + currentUser.getPassword() + "\n");
+        tvBaza.setText("Current user: " +  Integer.toString(currentUser.getUserID()) + ", " + currentUser.getUsername() + ", " + currentUser.getPassword() + "\n" + "CurrentUserType: " + currentUser.getType()+ "\n");
 
         //TESTIRANJE FUNKCIJE getallusers sa listom
          ArrayList<User> users = myDb.getAllusers();
@@ -390,20 +398,22 @@ public class MainActivity extends AppCompatActivity
         Calendar proslost = Calendar.getInstance();
         proslost.add(Calendar.DAY_OF_MONTH, -1);
 
-        myDb.insertFlight(1, Util.getRandomString(), buducnost, 134.4 , true );
-        myDb.insertFlight(1, Util.getRandomString(), proslost, 124.4 , true );
-        myDb.insertFlight(1, Util.getRandomString(), zaGodinuiDana, 114.4 , true );
+        //myDb.insertFlight(1, Util.getRandomString(), buducnost, 134.4 , true );
+        //myDb.insertFlight(1, Util.getRandomString(), proslost, 124.4 , true );
+        //myDb.insertFlight(1, Util.getRandomString(), zaGodinuiDana, 114.4 , true );
 
         ArrayList<Flight> flights = myDb.getAllFlights();
         tvBaza.setText(tvBaza.getText().toString() + "\n" + "Letovi:\n");
         for (int i = 0; i < flights.size(); i++) {
-            tvBaza.setText(tvBaza.getText().toString() + "\n" + Integer.toString(flights.get(i).getFlightID()) + ", " + Integer.toString(flights.get(i).getUserID()) + "," + flights.get(i).getDestination() );
+            tvBaza.setText(tvBaza.getText().toString() + "\n" + "FlightID: " + Integer.toString(flights.get(i).getFlightID()) +
+                    ", UserID: " + Integer.toString(flights.get(i).getUserID()) +
+                    ", Destination: " + flights.get(i).getDestination() );
         }
 
-        //Testoramke notesa
+        //Testiranje notesa
         myDb.insertNote(2, 3, "Ovo je sadrzaj biljeske.");
         ArrayList<Note> notes = myDb.getAllNotes();
-        tvBaza.setText(tvBaza.getText().toString() + "\n" + "Nostesi:\n");
+        tvBaza.setText(tvBaza.getText().toString() + "\n" + "Notesi:\n");
         for (int i = 0; i < notes.size(); i++) {
             tvBaza.setText(tvBaza.getText().toString() + "\n" + Integer.toString(notes.get(i).getFlightID()) + ", " + Integer.toString(notes.get(i).getUserID()) + "," + notes.get(i).getContent() );
         }
@@ -413,7 +423,7 @@ public class MainActivity extends AppCompatActivity
         ArrayList<Reservation> reservations = myDb.getAllReservations();
         tvBaza.setText(tvBaza.getText().toString() + "\n" + "Rezervacije:\n");
         for (int i = 0; i < reservations.size(); i++) {
-            tvBaza.setText(tvBaza.getText().toString() + "\n" + Integer.toString(reservations.get(i).getUserID()) + ", " + Integer.toString(reservations.get(i).getFlightID()) + "," + Util.CalendarToString(reservations.get(i).getDate()) + " ," + String.valueOf(reservations.get(i).isActive()));
+            tvBaza.setText(tvBaza.getText().toString() + "\n" + "UserID: " + Integer.toString(reservations.get(i).getUserID()) + ", Flight ID: " + Integer.toString(reservations.get(i).getFlightID()) + ", " + Util.CalendarToString(reservations.get(i).getDate()) + " , Aktivna: " + String.valueOf(reservations.get(i).isActive()));
         }
 
 
@@ -423,7 +433,7 @@ public class MainActivity extends AppCompatActivity
        ArrayList<MyLog> logs = myDb.getAllLogs();
         tvBaza.setText(tvBaza.getText().toString() + "\n" + "\nLogovi(" + Integer.toString(logs.size()) + "):\n");
         for (int i = 0; i < logs.size(); i++) {
-            tvBaza.setText(tvBaza.getText().toString() + "\n" + Integer.toString(logs.get(i).getLogID()) + ", " + Integer.toString(logs.get(i).getUserID()) + "," + Util.CalendarToString(logs.get(i).getDateTime()) + " ," + String.valueOf(logs.get(i).getAction()));
+            tvBaza.setText(tvBaza.getText().toString() + "\n" + "LogID: " + Integer.toString(logs.get(i).getLogID()) + ", UserID: " + Integer.toString(logs.get(i).getUserID()) + "," + Util.CalendarToString(logs.get(i).getDateTime()) + " ," + String.valueOf(logs.get(i).getAction()));
         }
     }
 
