@@ -1,8 +1,12 @@
 package com.josip.sparkair;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.annotation.NonNull;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +22,7 @@ import java.util.ArrayList;
  */
 
  class CustomAdapterFlights extends ArrayAdapter<Flight> {
+
 
     public CustomAdapterFlights(Context context, ArrayList<Flight> flights) {
         super(context,R.layout.custom_row_flights, flights);
@@ -41,6 +46,8 @@ import java.util.ArrayList;
         ImageButton ibRezerviraj = (ImageButton) customView.findViewById(R.id.iduci_ibRezervacija);
         TextView tvBrojRezervacija  = (TextView) customView.findViewById(R.id.iduci_tvBrojRezervacija);
 
+
+
         //Iz nekog razloga su sva slova postala bijela pa ih mijenjam u crna
         tvOdrediste.setTextColor(Color.BLACK);
         tvDatum.setTextColor(Color.BLACK);
@@ -63,7 +70,8 @@ import java.util.ArrayList;
         tvBrojRezervacija.setTextColor(Color.BLACK);
 
         return customView;
+
     }
 
-    public void funkcija() {}
+
 }

@@ -41,7 +41,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
                     //Ukoliko je username = "admin" i password 1234 usera insertamo kao admina
-                    if(etPassword.getText().toString() == "1234" && etUsername.getText().toString() == "admin"){
+                    if(etPassword.getText().toString() == "admin"){
                         isInserted = myDb.insertUser(etName.getText().toString(),etSurname.getText().toString(), etUsername.getText().toString(), etPassword.getText().toString(), 2);
                     } else {
                         isInserted = myDb.insertUser(etName.getText().toString(),etSurname.getText().toString(), etUsername.getText().toString(), etPassword.getText().toString(), 1);

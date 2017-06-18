@@ -1,6 +1,10 @@
 package com.josip.sparkair;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.media.Image;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 //import android.app.Fragment;
 import android.content.Intent;
@@ -36,6 +40,7 @@ import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Button;
 
 import com.josip.sparkair.Util.FlightComparator;
 import com.josip.sparkair.Util.Util;
@@ -75,6 +80,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+
         //myDb.insertUser("AdminName", "AdminSurname", "admin", "admin", 2 );
 
         super.onCreate(savedInstanceState);
@@ -97,7 +103,7 @@ public class MainActivity extends AppCompatActivity
 
         //FloatingButtonZaDodavanjeLetova
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        if(currentUser.getType() != 2){
+        if (currentUser.getType() != 2) {
             fab.setVisibility(View.INVISIBLE);
         }
 
@@ -119,18 +125,17 @@ public class MainActivity extends AppCompatActivity
         tabHost.addTab(spec);
 
         //Tab Test
-      spec = tabHost.newTabSpec("Tab Three");
+        spec = tabHost.newTabSpec("Tab Three");
         spec.setContent(R.id.tabTest);
         spec.setIndicator("Test");
-       tabHost.addTab(spec);
+        tabHost.addTab(spec);
 
         //Dohvaćanje spremljenih podataka nakon rotacije screena
         // i postavljanje trenutno otvorenog fragmenta i ukljucivanje i iskljucivanje tabhosta
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             currentFragment = savedInstanceState.getInt(TRENUTNI_FRAGMENT);
             setSpremljeniFragment(currentFragment);
-        }
-        else {
+        } else {
             currentFragment = POCETNA;
         }
 
@@ -140,9 +145,9 @@ public class MainActivity extends AppCompatActivity
 
         //Floating button za dodavanje novih letova
         fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
+            //            @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), AddFlightActivity.class ));
+                startActivity(new Intent(getApplicationContext(), AddFlightActivity.class));
             }
         });
 
@@ -183,7 +188,9 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+
     }
+
 
     @Override
     public void onBackPressed() {
@@ -201,7 +208,7 @@ public class MainActivity extends AppCompatActivity
 
         //Provjera da li je user logovan i ako jest prikazati opciju logOut
         //Ako nije logovan prikazati opciju login
-       // User user = Util.getCurrentUser(getApplicationContext()); --previse pozivanja
+        // User user = Util.getCurrentUser(getApplicationContext()); --previse pozivanja
 
 
         Menu nav_Menu = navigationView.getMenu(); //dravable menu
@@ -223,8 +230,6 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-
-
         profileBox_tvImePrezime.setText(currentUser.getName() + " " + currentUser.getSurname());
         if (currentUser.getType() == -1) {
             //trenutni user je gost, prikazati samo login opciju
@@ -234,8 +239,7 @@ public class MainActivity extends AppCompatActivity
             nav_Menu.findItem(R.id.nav_odjava).setVisible(false);
             //mijenjanje informacija u profile boxu
             profileBox_tvOstaleInformacije.setText("Guest account");
-        }
-        else{
+        } else {
             // user je logiran, prikazati samo logout opciju
             menu.findItem(R.id.actionLogOut).setVisible(true);
             menu.findItem(R.id.actionSignIn).setVisible(false);
@@ -260,7 +264,6 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
 
 
-
         getMenuInflater().inflate(R.menu.main, menu);
         navDrawerMenu = menu;
         return true;
@@ -278,8 +281,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
             return true;
-        }
-        else if (id == R.id.actionLogOut) {
+        } else if (id == R.id.actionLogOut) {
             Util.odjaviSe(getApplicationContext());
             Toast.makeText(this, "Odjavili ste se", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -291,9 +293,11 @@ public class MainActivity extends AppCompatActivity
     //Prikaz odabranog fragmenta
     private void displaySelectedScreen(int id) {
         Fragment fragment = null;
-        if(currentUser.getType() != 2) {
+        if (currentUser.getType() != 2) {
             fab.setVisibility(View.GONE);
-        } else {fab.setVisibility(View.VISIBLE);}
+        } else {
+            fab.setVisibility(View.VISIBLE);
+        }
 
         switch (id) {
             case POCETNA:
@@ -306,21 +310,21 @@ public class MainActivity extends AppCompatActivity
                 fab.setVisibility(View.VISIBLE);
                 break;
             case BUDUCA_PUTOVANJA:
-            fragment = new MenuBuducaPutovanja();
-            currentFragment = BUDUCA_PUTOVANJA;
-            break;
+                fragment = new MenuBuducaPutovanja();
+                currentFragment = BUDUCA_PUTOVANJA;
+                break;
             case PROSLA_PUTOVANJA:
-            fragment = new MenuProslaPutovanja();
-            currentFragment = PROSLA_PUTOVANJA;
-            break;
+                fragment = new MenuProslaPutovanja();
+                currentFragment = PROSLA_PUTOVANJA;
+                break;
             case KONTAKT:
-            fragment = new MenuKontakt();
-            currentFragment = KONTAKT;
-            break;
+                fragment = new MenuKontakt();
+                currentFragment = KONTAKT;
+                break;
         }
 
         if (fragment != null) {
-          //  currentFragment = id;
+            //  currentFragment = id;
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_main, fragment);
             ft.commit();
@@ -343,8 +347,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.navPocetna) {
             tabHost.setVisibility(View.VISIBLE);
             tabHost.setCurrentTab(0);
-        }
-        else {
+        } else {
             tabHost.setVisibility(View.GONE);
         }
         displaySelectedScreen(id);
@@ -358,7 +361,7 @@ public class MainActivity extends AppCompatActivity
         testiranje();
 
         //Refresh liste Top Ponuda
-       TopPonudaLetoviAdapter = new CustomAdapterFlights(this, getTopPonuda());
+        TopPonudaLetoviAdapter = new CustomAdapterFlights(this, getTopPonuda());
         lvTopPonudaLetovi.setAdapter(TopPonudaLetoviAdapter);
 
         //Refresh liste IduciLetovi
@@ -374,21 +377,21 @@ public class MainActivity extends AppCompatActivity
 
         //Provjera koji je user logovan
         User currentUser = Util.getCurrentUser(getApplicationContext());
-       // Toast.makeText(this, "Current user:" + Integer.toString(currentUser.getUserID()), Toast.LENGTH_SHORT).show();
-        tvBaza.setText("Current user: " +  Integer.toString(currentUser.getUserID()) + ", " + currentUser.getUsername() + ", " + currentUser.getPassword() + "\n" + "CurrentUserType: " + currentUser.getType()+ "\n");
+        // Toast.makeText(this, "Current user:" + Integer.toString(currentUser.getUserID()), Toast.LENGTH_SHORT).show();
+        tvBaza.setText("Current user: " + Integer.toString(currentUser.getUserID()) + ", " + currentUser.getUsername() + ", " + currentUser.getPassword() + "\n" + "CurrentUserType: " + currentUser.getType() + "\n");
 
         //TESTIRANJE FUNKCIJE getallusers sa listom
-         ArrayList<User> users = myDb.getAllusers();
+        ArrayList<User> users = myDb.getAllusers();
 
-         if (users.size() == 0) {
-             tvBaza.setText("\n" + tvBaza.getText().toString() + "Nema usera u bazi");
-         } else {
-             StringBuffer string = new StringBuffer();
-             for (int i = 0; i < users.size(); i++) {
-                 string.append(Integer.toString(users.get(i).getUserID()) + "," + users.get(i).getName() + ", " + users.get(i).getSurname() + "\n");
-             }
-             tvBaza.setText("\n" + tvBaza.getText().toString() + "\n" + "Users: \n" + string.toString());
-         }
+        if (users.size() == 0) {
+            tvBaza.setText("\n" + tvBaza.getText().toString() + "Nema usera u bazi");
+        } else {
+            StringBuffer string = new StringBuffer();
+            for (int i = 0; i < users.size(); i++) {
+                string.append(Integer.toString(users.get(i).getUserID()) + "," + users.get(i).getName() + ", " + users.get(i).getSurname() + "\n");
+            }
+            tvBaza.setText("\n" + tvBaza.getText().toString() + "\n" + "Users: \n" + string.toString());
+        }
 
         //Testiranje flightova
 //
@@ -410,7 +413,7 @@ public class MainActivity extends AppCompatActivity
         for (int i = 0; i < flights.size(); i++) {
             tvBaza.setText(tvBaza.getText().toString() + "\n" + "FlightID: " + Integer.toString(flights.get(i).getFlightID()) +
                     ", UserID: " + Integer.toString(flights.get(i).getUserID()) +
-                    ", Destination: " + flights.get(i).getDestination() );
+                    ", Destination: " + flights.get(i).getDestination());
         }
 
         //Testiranje notesa
@@ -418,7 +421,7 @@ public class MainActivity extends AppCompatActivity
         ArrayList<Note> notes = myDb.getAllNotes();
         tvBaza.setText(tvBaza.getText().toString() + "\n" + "Notesi:\n");
         for (int i = 0; i < notes.size(); i++) {
-            tvBaza.setText(tvBaza.getText().toString() + "\n" + Integer.toString(notes.get(i).getFlightID()) + ", " + Integer.toString(notes.get(i).getUserID()) + "," + notes.get(i).getContent() );
+            tvBaza.setText(tvBaza.getText().toString() + "\n" + Integer.toString(notes.get(i).getFlightID()) + ", " + Integer.toString(notes.get(i).getUserID()) + "," + notes.get(i).getContent());
         }
 
         //Testiranje rezervacija
@@ -430,10 +433,9 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-
         //Testiranje logova
-      boolean uspjesno =  myDb.insertLog(1, "User je uspjesno rezervirao putovanje", Calendar.getInstance());
-       ArrayList<MyLog> logs = myDb.getAllLogs();
+        boolean uspjesno = myDb.insertLog(1, "User je uspjesno rezervirao putovanje", Calendar.getInstance());
+        ArrayList<MyLog> logs = myDb.getAllLogs();
         tvBaza.setText(tvBaza.getText().toString() + "\n" + "\nLogovi(" + Integer.toString(logs.size()) + "):\n");
         for (int i = 0; i < logs.size(); i++) {
             tvBaza.setText(tvBaza.getText().toString() + "\n" + "LogID: " + Integer.toString(logs.get(i).getLogID()) + ", UserID: " + Integer.toString(logs.get(i).getUserID()) + "," + Util.CalendarToString(logs.get(i).getDateTime()) + " ," + String.valueOf(logs.get(i).getAction()));
@@ -461,7 +463,7 @@ public class MainActivity extends AppCompatActivity
     //Pokrece spremljeni fragment nakon rotacije screena
     private void setSpremljeniFragment(int spremljeniFragmentID) {
         Fragment fragment;
-        switch (spremljeniFragmentID)  {
+        switch (spremljeniFragmentID) {
             case POCETNA:
                 tabHost.setVisibility(View.VISIBLE);
                 currentFragment = POCETNA;
@@ -493,6 +495,45 @@ public class MainActivity extends AppCompatActivity
         startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
         drawer.closeDrawer(GravityCompat.START);
     }
+
+    public void onReservationClicked(View view) {
+
+        final ImageButton iduci_ibRezervacija = (ImageButton) findViewById(R.id.iduci_ibRezervacija);
+        iduci_ibRezervacija.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick (View v){
+
+                if(currentUser.getType() != -1) {
+
+                    AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                    alertDialog.setTitle("Potvrda");
+                    alertDialog.setMessage("Sigurni ste da zelite rezervirati ovaj let?");
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "DA",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(getBaseContext(), "Uspijesno ste rezervirali let", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+
+
+                                    iduci_ibRezervacija.setBackgroundColor(Color.RED);
+                                }
+                            });
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NE",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                } else {
+                    Toast.makeText(getBaseContext(), "Niste registrirani", Toast.LENGTH_SHORT).show();
+                }
+        }
+        });
+    }
+
+
     public ArrayList<Flight> getTopPonuda() {
         ArrayList<Flight> flights = myDb.getAllFlights();
 
@@ -541,5 +582,7 @@ public class MainActivity extends AppCompatActivity
         Collections.sort(flights, FlightComparator.ComparatorFlightDatum());
         return flights;
     }
+
+
 
 }

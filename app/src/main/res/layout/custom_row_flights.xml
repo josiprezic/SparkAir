@@ -81,6 +81,7 @@
                 android:contentDescription="View za dodavanje rezervacije"
                 android:cropToPadding="false"
                 android:elevation="3dp"
+                android:onClick="onReservationClicked"
                 android:scaleType="fitCenter"
                 android:tint="@color/colorPrimary"
                 app:srcCompat="@drawable/ic_playlist_add_black_48dp" />
